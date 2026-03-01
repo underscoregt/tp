@@ -29,13 +29,14 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 <puml src="diagrams/ArchitectureDiagram.puml" width="280" />
 
-The ***Architecture Diagram*** given above explains the high-level design of the App.
+The _**Architecture Diagram**_ given above explains the high-level design of the App.
 
 Given below is a quick overview of main components and how they interact with each other.
 
 **Main components of the architecture**
 
 **`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -50,13 +51,13 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
 Each of the four main components (also shown in the diagram above),
 
-* defines its *API* in an `interface` with the same name as the Component.
+* defines its _API_ in an `interface` with the same name as the Component.
 * implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
@@ -112,14 +113,15 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <puml src="diagrams/ParserClasses.puml" width="600"/>
 
 How the parsing works:
+
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
+
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="450" />
-
 
 The `Model` component,
 
@@ -136,7 +138,6 @@ The `Model` component,
 
 </box>
 
-
 ### Storage component
 
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
@@ -144,6 +145,7 @@ The `Model` component,
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
+
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
@@ -194,7 +196,6 @@ Step 4. The user now decides that adding the person was a mistake, and decides t
 
 <puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
 
-
 <box type="info" seamless>
 
 **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
@@ -236,7 +237,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 <puml src="diagrams/CommitActivityDiagram.puml" width="250" />
 
-#### Design considerations:
+#### Design considerations
 
 **Aspect: How undo & redo executes:**
 
@@ -254,7 +255,6 @@ _{more aspects and alternatives to be added}_
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -274,20 +274,25 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
+* for educators
+* has a need to manage a significant number of student, parent or fellow colleague contacts
+* has a need to manage class groups and their associated contacts
+* has a need to manage a significant number of tasks and assignments
 * prefer desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**:
 
+* manage students, parents, colleagues, supervisors, bosses, etc. faster than a typical mouse/GUI driven app
+* provides easy access and management of class groups and assignments in one place
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a ...                                   | I want to ...                                      | So that I can...                                                                         |
+| Priority | As a ...                                   | I want to ...                                      | So that I can ...                                                                         |
 |----------|--------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------|
 | `* * *`  | new user                                   | see usage instructions                             | refer to instructions when I forget how to use the App                                   |
 | `* * *`  | user                                       | add a new person                                   |                                                                                          |
@@ -323,10 +328,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User requests to list persons
+1. AddressBook shows a list of persons
+1. User requests to delete a specific person in the list
+1. AddressBook deletes the person
 
     Use case ends.
 
@@ -338,19 +343,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+  * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-*{More to be added}*
+_{More to be added}_
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+1. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+1. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. Should respond to user commands within 2 seconds to ensure a smooth user experience.
+1. Should be capable of handling up to 50 classes and 500 assignments without noticeable reduction in performance for typical usage.
+1. Should launch and load existing data within 5 seconds.
+1. Should gracefully handle invalid inputs by providing clear, red-colored error messages instructing the user on the correct format.
+1. Should work well for standard screen resolutions of 1920x1080 and higher (at 100% and 125% screen scales), and must remain fully usable for resolutions of 1280x720 and higher (at 150% screen scale).
+1. Data should be stored locally in a human-editable text file (JSON) without the use of any Database Management System.
+1. Should automatically save data to the hard disk after any command that modifies the state to prevent data loss.
 
 ### Glossary
 
@@ -366,7 +376,7 @@ Given below are instructions to test the app manually.
 <box type="info" seamless>
 
 **Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
+testers are expected to do more _exploratory_ testing.
 
 </box>
 

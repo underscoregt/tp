@@ -19,7 +19,9 @@
     "editor.insertSpaces": true
   },
   "redhat.telemetry.enabled": true,
-  "editor.rulers": [120],
+  "editor.rulers": [
+    120
+  ],
   "[java]": {
     "editor.defaultFormatter": "redhat.java"
   },
@@ -38,5 +40,31 @@
     "source.organizeImports": "always"
   },
   "[gradle]": {},
-  "diffEditor.ignoreTrimWhitespace": false
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "markdownlint.run": "onSave",
+  "markdownlint.config": {
+    "default": true,
+    "ul-style": {
+      "style": "asterisk"
+    },
+    "strong-style": {
+      "style": "asterisk"
+    },
+    "table-column-style": {
+      "style": "aligned"
+    },
+    "table-pipe-style": {
+      "style": "leading_and_trailing"
+    },
+    "ol-prefix": {
+      "style": "one"
+    },
+    "md033": false,
+    "md045": false,
+    "md025": false,
+    "md036": false
+  }
 }

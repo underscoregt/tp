@@ -1,61 +1,64 @@
 ---
-  layout: default.md
-  title: "About Us"
+layout: default.md
+title: "About Us"
 ---
 
 # About Us
 
 We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-You can reach us at the email `seer[at]comp.nus.edu.sg`
-
 ## Project team
 
-### John Doe
+### Toh Yi Zhong
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/tohyzhong.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
+[[linkedin](https://www.linkedin.com/in/yizhongtoh)]
+[[github](https://github.com/tohyzhong)]
+[[portfolio](team/tohyzhong.md)]
+
+* Role: Developer
+
+### Li Zuyi
+
+<img src="images/lizuyi.png" width="200px">
+
+[[homepage](https://www.linkedin.com/in/zuyi-li-ba692b327/)]
+[[github](https://github.com/ZSYUYIIE)]
+[[portfolio](team/lizuyi.md)]
+
+Major: Computer Science Year 2
+
+Nationality: Chinese
+
+* Role: Developer
+
+### Wong Eu En
+
+<img src="images/euenw.png" width="200px">
+
+[[linkedin](https://www.linkedin.com/in/eu-en-wong-1547b9234/)]
 [[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Project Advisor
-
-### Jane Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Team Lead
-* Responsibilities: UI
-
-### Johnny Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[portfolio](team/euenw.md)]
 
 * Role: Developer
-* Responsibilities: Data
 
-### Jean Doe
+### Terry Si
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/blerargh.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
-
-### James Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[linkedin](https://www.linkedin.com/in/terry-si/)]
+[[github](https://github.com/blerargh)]
+[[portfolio](team/blerargh.md)]
 
 * Role: Developer
-* Responsibilities: UI
+
+### Gabriel Tan
+
+<img src="images/underscoregt.png" width="200px">
+
+[[linkedin](https://www.linkedin.com/in/gabriel-tan-aaa390201/)]
+[[github](https://github.com/underscoregt)]
+[[portfolio](team/underscoregt.md)]
+
+* Role: Developer
