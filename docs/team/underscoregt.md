@@ -23,4 +23,4 @@ Given below are my contributions to the project.
 
 * **Tools**:
 
-* *{you can add/remove categories in the list above}*
+* _{you can add/remove categories in the list above}_

@@ -65,6 +65,9 @@
     "strong-style": {
       "style": "asterisk"
     },
+    "emphasis-style": {
+      "style": "underscore"
+    },
     "table-column-style": {
       "style": "aligned"
     },
