@@ -21,11 +21,11 @@ We are a team based in the [School of Computing, National University of Singapor
 
 ### Li Zuyi
 
-<img src="images/lizuyi.png" width="200px">
+<img src="images/zsyuyiie.png" width="200px">
 
-[[homepage](https://www.linkedin.com/in/zuyi-li-ba692b327/)]
-[[github](https://github.com/ZSYUYIIE)]
-[[portfolio](team/lizuyi.md)]
+[[linkedin](https://www.linkedin.com/in/zuyi-li-ba692b327/)]
+[[github](https://github.com/zsyuyiie)]
+[[portfolio](team/zsyuyiie.md)]
 
 Major: Computer Science Year 2
 
@@ -38,7 +38,7 @@ Nationality: Chinese
 <img src="images/euenw.png" width="200px">
 
 [[linkedin](https://www.linkedin.com/in/eu-en-wong-1547b9234/)]
-[[github](https://github.com/johndoe)]
+[[github](https://github.com/euenw)]
 [[portfolio](team/euenw.md)]
 
 * Role: Developer
