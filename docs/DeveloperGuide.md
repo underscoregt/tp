@@ -301,7 +301,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                                       | add contacts                                       | easily retrieve them                                                       |
 | `* * *`  | user                                       | see all the assignments/contacts/classes           | keep track of what has been created                                        |
 | `* * *`  | busy user                                  | add deadlines/events                               | keep track of my things easily                                             |
-| `* * *`  | teacher managing many students             | organise my students into separate groups by class | easily identify which students belong to which class                       |
+| `* * *`  | teacher managing many students             | organize my students into separate groups by class | easily identify which students belong to which class                       |
 | `* * *`  | teacher                                    | see all assignment status for each student         | keep track of every individual's performance                               |
 | `* * *`  | teacher changing classes every year        | easily delete/archive multiple old contacts        | keep only the contacts I need accessible                                   |
 | `* * *`  | CLI user                                   | quickly exit the program                           | don't have to waste time clicking the close button                         |
@@ -726,7 +726,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Submission status**: The state of an _Assignment_ for a specified _Contact_ (e.g. not submitted, submitted).
-* **Tags**: A user-defined, optional label attached to a _Contact_ for categorisation and filtering (e.g. "Prefect").
+* **Tags**: A user-defined, optional label attached to a _Contact_ for categorization and filtering (e.g. "Prefect").
 * **Valid**: Satisfies all specified format and constraints defined by the system.
 
 --------------------------------------------------------------------------------------------------------------------

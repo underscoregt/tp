@@ -13,13 +13,13 @@ Classroom Plus Plus (CPP) is a powerful Command Line Interface (CLI) tool design
 who prefer typing over graphical user interfaces to streamline class contact management and assignment tracking.
 
 Managing hundreds of students' contact details and assignments can be a daunting task for educators.
-CPP simplifies this process by providing an intuitive interface to store and organise student information efficiently.
+CPP simplifies this process by providing an intuitive interface to store and organize student information efficiently.
 With CPP, educators can easily add, edit, and search for contacts, classes and assignments, ensuring that they have quick access to important information when needed.
 
 ## Key Features
 
 * **Contact Management**: Store and manage student contact details, including names, phone numbers, email addresses, and more.
-* **Class Organisation**: Group students into classes for better organisation and easy access to class-specific information.
+* **Class Organization**: Group students into classes for better organization and easy access to class-specific information.
 * **Assignment Tracking**: Keep track of student assignments, deadlines in one convenient location.
 * **Quick Access with Fuzzy Search**: Find details quickly using fuzzy search, even with partial or misspelled queries.
 * **CLI Interface**: Interact with CPP through a command-line interface, allowing for quick and efficient management of contacts and assignments.
