@@ -712,8 +712,22 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **Assignment**: A task created by the user containing minimally a deadline, and may include submission status and grading. Can be assigned to _Classes_ and _Contacts_.
+* **Class**: A user-defined group of contacts.
+* **CLI (Command Line Interface)**: The text-based interface through which users interact with the system by typing command.
+* **Command**: A text-based instruction entered into the CLI that triggers a system action.
+* **Contact**: An individual entry of a student or teacher, containing minimally a name, phone number, email address, and may include _Classes_ and _Assignments_.
+* **Deadline**: Time and date specifying the due date of an _Assignment_.
+* **Filtered List**: A dynamically updated subset of Contacts currently displayed in the GUI.
+* **GUI (Graphical User Interface)**: The visual interface of the application that displays tabs, lists, and feedback messages.
+* **Index**:  The number shown beside an item in the currently displayed list.
+* **Invalid**: Violates one or more specified formats or constraints defined by the system.
+* **JSON (JavaScript Object Notation)**: The human-readable file format used to automatically save and load application data locally.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Submission status**: The state of an _Assignment_ for a specified _Contact_ (e.g. not submitted, submitted).
+* **Tags**: A user-defined, optional label attached to a _Contact_ for categorisation and filtering (e.g. "Prefect").
+* **Valid**: Satisfies all specified format and constraints defined by the system.
 
 --------------------------------------------------------------------------------------------------------------------
 
