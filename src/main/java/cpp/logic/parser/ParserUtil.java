@@ -1,5 +1,8 @@
 package cpp.logic.parser;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,6 +24,7 @@ import cpp.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final DateTimeFormatter DEADLINE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading
@@ -123,5 +127,32 @@ public class ParserUtil {
             tagSet.add(ParserUtil.parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String datetime} into a {@code LocalDateTime}.
+     */
+    public static LocalDateTime parseDeadline(String datetime) throws ParseException {
+        Objects.requireNonNull(datetime);
+        String trimmedDatetime = datetime.trim();
+        LocalDateTime parsedDateTime;
+        try {
+            parsedDateTime = LocalDateTime.parse(trimmedDatetime, ParserUtil.DEADLINE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new ParseException("Invalid date and time format. Please use the format: dd-MM-yyyy HH:mm");
+        }
+        return parsedDateTime;
+    }
+
+    /**
+     * Parses a {@code String name} into a {@code AssignmentName}.
+     */
+    public static cpp.model.assignment.Name parseAssignmentName(String string) throws ParseException {
+        Objects.requireNonNull(string);
+        String trimmedName = string.trim();
+        if (!cpp.model.assignment.Name.isValidName(trimmedName)) {
+            throw new ParseException(cpp.model.assignment.Name.MESSAGE_CONSTRAINTS);
+        }
+        return new cpp.model.assignment.Name(trimmedName);
     }
 }
