@@ -23,6 +23,10 @@ checkstyle {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    // testLogging {
+    //     showStandardStreams = true
+    //     events "failed"
+    // }
 }
 
 task coverage(type: JacocoReport) {
