@@ -6,6 +6,11 @@ import java.util.UUID;
 
 import cpp.commons.util.ToStringBuilder;
 
+/**
+ * Represents an Assignment in the address book.
+ * Guarantees: details are present and not null, field values are validated,
+ * immutable.
+ */
 public class Assignment {
 
     // Identity fields
@@ -13,12 +18,23 @@ public class Assignment {
     private final Name name;
     private final LocalDateTime deadline;
 
+    /**
+     * Creates an assignment with the given name and deadline.
+     * Generates a random id for the assignment.
+     * Every field must be present and not null.
+     */
     public Assignment(Name name, LocalDateTime deadline) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.deadline = deadline;
     }
 
+    /**
+     * Creates an assignment with the given id, name and deadline. Every field must
+     * be present and not null.
+     * This constructor is used for loading from storage, where the id is already
+     * available.
+     */
     public Assignment(String id, Name name, LocalDateTime deadline) {
         this.id = id;
         this.name = name;

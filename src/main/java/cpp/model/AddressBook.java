@@ -113,11 +113,19 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     //// assignment level operations
+    /**
+     * Returns true if an assignment with the same identity as {@code assignment}
+     * exists in the address book.
+     */
     public boolean hasAssignment(Assignment assignment) {
         Objects.requireNonNull(assignment);
         return this.assignments.contains(assignment);
     }
 
+    /**
+     * Adds an assignment to the address book.
+     * The assignment must not already exist in the address book.
+     */
     public void addAssignment(Assignment assignment) {
         Objects.requireNonNull(assignment);
         this.assignments.add(assignment);

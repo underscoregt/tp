@@ -19,6 +19,10 @@ public class ContactAssignment {
     private boolean isGraded;
     private int score;
 
+    /**
+     * Creates a contact assignment between the given assignment and contact ids.
+     * The contact assignment is initially not submitted and not graded.
+     */
     public ContactAssignment(String assignmentId, String contactId) {
         CollectionUtil.requireAllNonNull(assignmentId, contactId);
         this.assignmentId = assignmentId;
@@ -26,6 +30,21 @@ public class ContactAssignment {
         this.isSubmitted = false;
         this.isGraded = false;
         this.score = 0;
+    }
+
+    /**
+     * Creates a contact assignment with the given details. This constructor is used
+     * for
+     * loading from storage, where the submission and grading state is already
+     * available.
+     */
+    public ContactAssignment(String assignmentId, String contactId, boolean isSubmitted, boolean isGraded, int score) {
+        CollectionUtil.requireAllNonNull(assignmentId, contactId, isSubmitted, isGraded, score);
+        this.assignmentId = assignmentId;
+        this.contactId = contactId;
+        this.isSubmitted = isSubmitted;
+        this.isGraded = isGraded;
+        this.score = score;
     }
 
     public String getAssignmentId() {
