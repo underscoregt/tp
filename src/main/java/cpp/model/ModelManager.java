@@ -115,11 +115,13 @@ public class ModelManager implements Model {
 
     @Override
     public boolean hasAssignment(Assignment assignment) {
+        Objects.requireNonNull(assignment);
         return this.addressBook.hasAssignment(assignment);
     }
 
     @Override
     public void addAssignment(Assignment assignment) {
+        Objects.requireNonNull(assignment);
         this.addressBook.addAssignment(assignment);
     }
 

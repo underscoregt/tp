@@ -11,6 +11,7 @@ import cpp.commons.core.GuiSettings;
 import cpp.model.person.NameContainsKeywordsPredicate;
 import cpp.testutil.AddressBookBuilder;
 import cpp.testutil.Assert;
+import cpp.testutil.TypicalAssignments;
 import cpp.testutil.TypicalPersons;
 
 public class ModelManagerTest {
@@ -26,7 +27,8 @@ public class ModelManagerTest {
 
     @Test
     public void setUserPrefs_nullUserPrefs_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> this.modelManager.setUserPrefs(null));
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.modelManager.setUserPrefs(null));
     }
 
     @Test
@@ -45,7 +47,8 @@ public class ModelManagerTest {
 
     @Test
     public void setGuiSettings_nullGuiSettings_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> this.modelManager.setGuiSettings(null));
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.modelManager.setGuiSettings(null));
     }
 
     @Test
@@ -57,7 +60,8 @@ public class ModelManagerTest {
 
     @Test
     public void setAddressBookFilePath_nullPath_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> this.modelManager.setAddressBookFilePath(null));
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.modelManager.setAddressBookFilePath(null));
     }
 
     @Test
@@ -84,6 +88,35 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void hasAssignment_nullAssignment_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.modelManager.hasAssignment(null));
+    }
+
+    @Test
+    public void hasAssignment_assignmentNotInAddressBook_returnsFalse() {
+        Assertions.assertFalse(this.modelManager.hasAssignment(TypicalAssignments.ASSIGNMENT_ONE));
+    }
+
+    @Test
+    public void hasAssignment_assignmentInAddressBook_returnsTrue() {
+        this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
+        Assertions.assertTrue(this.modelManager.hasAssignment(TypicalAssignments.ASSIGNMENT_ONE));
+    }
+
+    @Test
+    public void addAssignment_nullAssignment_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> this.modelManager.addAssignment(null));
+    }
+
+    @Test
+    public void addAssignment_validAssignment_addSuccessful() {
+        this.modelManager.addAssignment(TypicalAssignments.ASSIGNMENT_ONE);
+        Assertions.assertTrue(this.modelManager.hasAssignment(TypicalAssignments.ASSIGNMENT_ONE));
+    }
+
+    @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         Assert.assertThrows(UnsupportedOperationException.class,
                 () -> this.modelManager.getFilteredPersonList().remove(0));
@@ -92,8 +125,11 @@ public class ModelManagerTest {
     @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(TypicalPersons.ALICE)
+                .withPerson(TypicalPersons.BENSON).withAssignment(TypicalAssignments.ASSIGNMENT_ONE).build();
+        AddressBook differentAddressBook1 = new AddressBookBuilder().withPerson(TypicalPersons.ALICE)
                 .withPerson(TypicalPersons.BENSON).build();
-        AddressBook differentAddressBook = new AddressBook();
+        AddressBook differentAddressBook2 = new AddressBookBuilder().withAssignment(TypicalAssignments.ASSIGNMENT_ONE)
+                .build();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
@@ -111,7 +147,8 @@ public class ModelManagerTest {
         Assertions.assertFalse(this.modelManager.equals(5));
 
         // different addressBook -> returns false
-        Assertions.assertFalse(this.modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
+        Assertions.assertFalse(this.modelManager.equals(new ModelManager(differentAddressBook1, userPrefs)));
+        Assertions.assertFalse(this.modelManager.equals(new ModelManager(differentAddressBook2, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = TypicalPersons.ALICE.getName().fullName.split("\\s+");
