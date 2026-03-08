@@ -5,7 +5,9 @@ import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.UniqueAssignmentList;
+import cpp.model.assignment.UniqueContactAssignmentList;
 import cpp.model.person.Person;
 import cpp.model.person.UniquePersonList;
 import javafx.collections.ObservableList;
@@ -18,6 +20,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
     private final UniqueAssignmentList assignments;
+    private final UniqueContactAssignmentList contactAssignments;
 
     /*
      * The 'unusual' code block below is a non-static initialization block,
@@ -31,6 +34,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     {
         this.persons = new UniquePersonList();
         this.assignments = new UniqueAssignmentList();
+        this.contactAssignments = new UniqueContactAssignmentList();
     }
 
     public AddressBook() {
@@ -63,6 +67,15 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the contents of the contact assignment list with
+     * {@code contactAssignments}.
+     * {@code contactAssignments} must not contain duplicate contact assignments.
+     */
+    public void setContactAssignments(List<ContactAssignment> contactAssignments) {
+        this.contactAssignments.setContactAssignments(contactAssignments);
+    }
+
+    /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
     public void resetData(ReadOnlyAddressBook newData) {
@@ -70,6 +83,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         this.setPersons(newData.getPersonList());
         this.setAssignments(newData.getAssignmentList());
+        this.setContactAssignments(newData.getContactAssignmentList());
     }
 
     //// person-level operations
@@ -131,6 +145,30 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.assignments.add(assignment);
     }
 
+    /**
+     * Returns true if the contact assignment exists in the address book.
+     */
+    public boolean hasContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        return this.contactAssignments.contains(contactAssignment);
+    }
+
+    /**
+     * Adds a contact assignment to the address book.
+     */
+    public void addContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        this.contactAssignments.add(contactAssignment);
+    }
+
+    /**
+     * Removes a contact assignment from the address book.
+     */
+    public void removeContactAssignment(ContactAssignment contactAssignment) {
+        Objects.requireNonNull(contactAssignment);
+        this.contactAssignments.remove(contactAssignment);
+    }
+
     //// util methods
 
     @Override
@@ -152,6 +190,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
+    public ObservableList<ContactAssignment> getContactAssignmentList() {
+        return this.contactAssignments.asUnmodifiableObservableList();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
@@ -163,11 +206,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         AddressBook otherAddressBook = (AddressBook) other;
-        return this.persons.equals(otherAddressBook.persons) && this.assignments.equals(otherAddressBook.assignments);
+        return this.persons.equals(otherAddressBook.persons)
+                && this.assignments.equals(otherAddressBook.assignments)
+                && this.contactAssignments.equals(otherAddressBook.contactAssignments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.persons, this.assignments);
+        return Objects.hash(this.persons, this.assignments, this.contactAssignments);
     }
 }

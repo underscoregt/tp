@@ -1,6 +1,7 @@
 package cpp.model;
 
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.person.Person;
 import javafx.collections.ObservableList;
 
@@ -20,5 +21,11 @@ public interface ReadOnlyAddressBook {
      * This list will not contain any duplicate assignments.
      */
     ObservableList<Assignment> getAssignmentList();
+
+    /**
+     * Returns an unmodifiable view of the contact assignments list.
+     * This list will not contain any duplicate contact assignments.
+     */
+    ObservableList<ContactAssignment> getContactAssignmentList();
 
 }

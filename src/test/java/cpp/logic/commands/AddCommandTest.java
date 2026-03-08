@@ -166,6 +166,16 @@ public class AddCommandTest {
         public void addAssignment(Assignment assignment) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public boolean allocateAssignmentToPerson(Assignment assignment, Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean unallocateAssignmentFromPerson(Assignment assignment, Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

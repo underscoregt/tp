@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import cpp.logic.commands.CommandTestUtil;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.Name;
 import cpp.model.person.Person;
 import cpp.model.person.exceptions.DuplicatePersonException;
@@ -156,6 +157,11 @@ public class AddressBookTest {
         @Override
         public ObservableList<Assignment> getAssignmentList() {
             throw new UnsupportedOperationException("Method 'getAssignmentList' should not be called.");
+        }
+
+        @Override
+        public ObservableList<ContactAssignment> getContactAssignmentList() {
+            throw new UnsupportedOperationException("Method 'getContactAssignmentList' should not be called.");
         }
     }
 

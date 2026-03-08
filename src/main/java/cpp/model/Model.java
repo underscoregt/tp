@@ -100,4 +100,14 @@ public interface Model {
      * Adds the given assignment.
      */
     void addAssignment(Assignment assignment);
+
+    /**
+     * Assigns the given assignment to the given person.
+     */
+    boolean allocateAssignmentToPerson(Assignment assignment, Person person);
+
+    /**
+     * Unassigns the given assignment from the given person.
+     */
+    boolean unallocateAssignmentFromPerson(Assignment assignment, Person person);
 }

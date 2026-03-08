@@ -3,6 +3,7 @@ package cpp.model.assignment;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -17,8 +18,34 @@ import cpp.model.assignment.exceptions.ContactNotAssignedAssignmentException;
  */
 public class AssignmentManager {
 
-    private final Map<String, Set<ContactAssignment>> byAssignment = new HashMap<>();
-    private final Map<String, Set<ContactAssignment>> byContact = new HashMap<>();
+    private final Map<String, Set<ContactAssignment>> byAssignment;
+    private final Map<String, Set<ContactAssignment>> byContact;
+
+    /**
+     * Creates an empty assignment manager with no assignments or contacts.
+     */
+    public AssignmentManager() {
+        this.byAssignment = new HashMap<>();
+        this.byContact = new HashMap<>();
+    }
+
+    /**
+     * Creates an assignment manager with the given initial contact assignments. The
+     * initial contact assignments must not contain duplicates.
+     */
+    public AssignmentManager(List<ContactAssignment> initialAssignments) {
+        this.byAssignment = new HashMap<>();
+        this.byContact = new HashMap<>();
+        for (ContactAssignment ca : initialAssignments) {
+            this.allocate(ca.getAssignmentId(), ca.getContactId());
+            if (ca.isSubmitted()) {
+                this.submit(ca.getAssignmentId(), ca.getContactId());
+            }
+            if (ca.isGraded()) {
+                this.grade(ca.getAssignmentId(), ca.getContactId(), ca.getScore());
+            }
+        }
+    }
 
     /**
      * Allocate an assignment to a contact that is not already allocated the
@@ -27,7 +54,7 @@ public class AssignmentManager {
      * @param assignmentId the id of the assignment to allocate
      * @param contactId    the id of the contact to allocate to
      */
-    public void allocate(String assignmentId, String contactId) {
+    public boolean allocate(String assignmentId, String contactId) {
         CollectionUtil.requireAllNonNull(assignmentId, contactId);
         Set<ContactAssignment> assSet = this.byAssignment.computeIfAbsent(assignmentId, k -> new HashSet<>());
         ContactAssignment ca = new ContactAssignment(assignmentId, contactId);
@@ -38,6 +65,7 @@ public class AssignmentManager {
         if (!contactSet.contains(ca)) {
             contactSet.add(ca);
         }
+        return true;
     }
 
     /**
@@ -46,7 +74,7 @@ public class AssignmentManager {
      * @param assignmentId the id of the assignment to unassign
      * @param contactId    the id of the contact to unassign from
      */
-    public void unassign(String assignmentId, String contactId) {
+    public boolean unallocate(String assignmentId, String contactId) {
         Set<ContactAssignment> assSet = this.byAssignment.get(assignmentId);
         if (assSet == null) {
             throw new AssignmentNotFoundException("This assignment does not have any contacts assigned.");
@@ -59,7 +87,7 @@ public class AssignmentManager {
             }
         }
         if (toRemove == null) {
-            return;
+            return false;
         }
         assSet.remove(toRemove);
 
@@ -73,6 +101,7 @@ public class AssignmentManager {
         if (assSet.isEmpty()) {
             this.byAssignment.remove(assignmentId);
         }
+        return true;
     }
 
     private ContactAssignment find(String assignmentId, String contactId) {

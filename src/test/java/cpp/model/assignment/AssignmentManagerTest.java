@@ -32,30 +32,30 @@ public class AssignmentManagerTest {
     }
 
     @Test
-    public void unassign_existingAndNonexistent_behaviour() {
+    public void unallocate_existingAndNonexistent_behaviour() {
         AssignmentManager manager = new AssignmentManager();
         String assignmentId = "a1";
         String contactId = "c1";
         manager.allocate(assignmentId, contactId);
 
-        // unassign existing
-        manager.unassign(assignmentId, contactId);
+        // unallocate existing assignment-contact pair
+        manager.unallocate(assignmentId, contactId);
         Assertions.assertTrue(manager.getContactsForAssignment(assignmentId).isEmpty());
         Assertions.assertTrue(manager.getAssignmentsForContact(contactId).isEmpty());
 
-        // unassign non-existent assignment -> throws
-        Assert.assertThrows(AssignmentNotFoundException.class, () -> manager.unassign("no", "c1"));
+        // unallocate non-existent assignment -> throws
+        Assert.assertThrows(AssignmentNotFoundException.class, () -> manager.unallocate("no", "c1"));
     }
 
     @Test
-    public void unassign_notAssignedContact_noExceptionAndOriginalRemains() {
+    public void unallocate_notAssignedContact_noExceptionAndOriginalRemains() {
         AssignmentManager manager = new AssignmentManager();
         String assignmentId = "a1";
         String contactId = "c1";
         manager.allocate(assignmentId, contactId);
 
-        // unassign for a different contact; should not remove the existing allocation
-        manager.unassign(assignmentId, "other");
+        // unallocate for a different contact; should not remove the existing allocation
+        manager.unallocate(assignmentId, "other");
         Assertions.assertFalse(manager.getContactsForAssignment(assignmentId).isEmpty());
     }
 

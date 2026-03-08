@@ -9,7 +9,11 @@ import cpp.commons.core.GuiSettings;
 import cpp.commons.core.LogsCenter;
 import cpp.commons.util.CollectionUtil;
 import cpp.model.assignment.Assignment;
+import cpp.model.assignment.AssignmentManager;
+import cpp.model.assignment.ContactAssignment;
+import cpp.model.assignment.exceptions.AssignmentNotFoundException;
 import cpp.model.person.Person;
+import cpp.model.person.exceptions.PersonNotFoundException;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
@@ -20,6 +24,7 @@ public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
+    private final AssignmentManager assignmentManager;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
 
@@ -32,6 +37,7 @@ public class ModelManager implements Model {
         ModelManager.logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        this.assignmentManager = new AssignmentManager(addressBook.getContactAssignmentList());
         this.userPrefs = new UserPrefs(userPrefs);
         this.filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
     }
@@ -123,6 +129,53 @@ public class ModelManager implements Model {
     public void addAssignment(Assignment assignment) {
         Objects.requireNonNull(assignment);
         this.addressBook.addAssignment(assignment);
+    }
+
+    @Override
+    public boolean allocateAssignmentToPerson(Assignment assignment, Person person) {
+        Objects.requireNonNull(assignment);
+        Objects.requireNonNull(person);
+        if (!this.addressBook.hasAssignment(assignment)) {
+            throw new AssignmentNotFoundException("This assignment does not exist.");
+        }
+
+        if (!this.addressBook.hasPerson(person)) {
+            throw new PersonNotFoundException();
+        }
+
+        ContactAssignment ca = new ContactAssignment(assignment.getId(), person.getId());
+        if (this.addressBook.hasContactAssignment(ca)) {
+            return false;
+        }
+
+        this.assignmentManager.allocate(assignment.getId(), person.getId());
+        this.addressBook.addContactAssignment(ca);
+        return true;
+    }
+
+    @Override
+    public boolean unallocateAssignmentFromPerson(Assignment assignment, Person person) {
+        Objects.requireNonNull(assignment);
+        Objects.requireNonNull(person);
+        if (!this.addressBook.hasAssignment(assignment)) {
+            throw new AssignmentNotFoundException("This assignment does not exist.");
+        }
+
+        if (!this.addressBook.hasPerson(person)) {
+            throw new PersonNotFoundException();
+        }
+
+        ContactAssignment ca = new ContactAssignment(assignment.getId(), person.getId());
+        try {
+            this.assignmentManager.unallocate(assignment.getId(), person.getId());
+        } catch (AssignmentNotFoundException e) {
+            throw new AssignmentNotFoundException("This assignment does not exist.");
+        }
+
+        if (this.addressBook.hasContactAssignment(ca)) {
+            this.addressBook.removeContactAssignment(ca);
+        }
+        return true;
     }
 
     // =========== Filtered Person List Accessors
