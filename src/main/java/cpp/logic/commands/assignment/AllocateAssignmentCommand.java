@@ -21,7 +21,7 @@ import cpp.model.person.Person;
  */
 public class AllocateAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "allocassg";
+    public static final String COMMAND_WORD = "allocass";
 
     public static final String MESSAGE_USAGE = AllocateAssignmentCommand.COMMAND_WORD
             + ": Allocates an assignment to a person. "
@@ -60,13 +60,7 @@ public class AllocateAssignmentCommand extends Command {
 
         List<Assignment> assignmentList = model.getAddressBook().getAssignmentList();
 
-        Assignment assignmentToAllocate = null;
-        for (Assignment a : assignmentList) {
-            if (a.getName().equals(this.assignmentName)) {
-                assignmentToAllocate = a;
-                break;
-            }
-        }
+        Assignment assignmentToAllocate = Assignment.findAssignment(assignmentList, this.assignmentName);
 
         if (assignmentToAllocate == null) {
             throw new CommandException(AllocateAssignmentCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
@@ -74,34 +68,7 @@ public class AllocateAssignmentCommand extends Command {
 
         List<Person> lastShownPersonList = model.getFilteredPersonList();
 
-        StringBuilder allocatedPersons = new StringBuilder();
-        boolean anyAllocated = false;
-        int allocatedCount = 0;
-
-        for (Index idx : this.contactIndices) {
-            if (idx.getZeroBased() >= lastShownPersonList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-            }
-
-            Person person = lastShownPersonList.get(idx.getZeroBased());
-            boolean allocated = model.allocateAssignmentToPerson(assignmentToAllocate, person);
-
-            if (allocated) {
-                if (allocatedPersons.length() > 0) {
-                    allocatedPersons.append("; ");
-                }
-                allocatedPersons.append(person.getName().fullName);
-                anyAllocated = true;
-                allocatedCount++;
-            }
-        }
-
-        if (!anyAllocated) {
-            throw new CommandException(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED);
-        }
-
-        return new CommandResult(String.format(AllocateAssignmentCommand.MESSAGE_SUCCESS,
-                Messages.format(assignmentToAllocate), allocatedCount, allocatedPersons.toString()));
+        return this.allocateToContacts(model, assignmentToAllocate, lastShownPersonList);
     }
 
     @Override
@@ -122,6 +89,40 @@ public class AllocateAssignmentCommand extends Command {
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
                 .toString();
+    }
+
+    private CommandResult allocateToContacts(Model model, Assignment assignmentToAllocate,
+            List<Person> lastShownPersonList) throws CommandException {
+        StringBuilder allocatedPersons = new StringBuilder();
+        boolean anyAllocated = false;
+        int allocatedCount = 0;
+
+        for (Index idx : this.contactIndices) {
+            if (idx.getZeroBased() >= lastShownPersonList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
+
+            Person person = lastShownPersonList.get(idx.getZeroBased());
+            boolean allocated = model.allocateAssignmentToPerson(assignmentToAllocate, person);
+
+            if (!allocated) {
+                continue;
+            }
+
+            if (allocatedPersons.length() > 0) {
+                allocatedPersons.append("; ");
+            }
+            allocatedPersons.append(person.getName().fullName);
+            anyAllocated = true;
+            allocatedCount++;
+        }
+
+        if (!anyAllocated) {
+            throw new CommandException(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED);
+        }
+
+        return new CommandResult(String.format(AllocateAssignmentCommand.MESSAGE_SUCCESS,
+                Messages.format(assignmentToAllocate), allocatedCount, allocatedPersons.toString()));
     }
 
 }
