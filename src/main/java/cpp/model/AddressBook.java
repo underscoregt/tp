@@ -182,6 +182,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.classGroups.remove(key);
     }
 
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeAssignment(Assignment key) {
+        this.assignments.remove(key);
+    }
+
     //// util methods
 
     @Override
