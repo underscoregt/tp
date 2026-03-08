@@ -11,6 +11,18 @@ import cpp.testutil.TypicalPersons;
 public class PersonTest {
 
     @Test
+    public void constructor_nullId_success() {
+        Person person = new PersonBuilder().withId(null).build();
+        Assertions.assertNotNull(person.getId());
+    }
+
+    @Test
+    public void constructor_validId_success() {
+        Person person = new PersonBuilder().withId("1").build();
+        Assertions.assertEquals("1", person.getId());
+    }
+
+    @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
         Person person = new PersonBuilder().build();
         Assert.assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));

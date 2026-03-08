@@ -26,6 +26,14 @@ public class JsonAdaptedAssignmentTest {
     }
 
     @Test
+    public void toModelType_nullId_throwsIllegalValueException() {
+        JsonAdaptedAssignment json = new JsonAdaptedAssignment(null, JsonAdaptedAssignmentTest.VALID_NAME,
+                JsonAdaptedAssignmentTest.VALID_DEADLINE);
+        String expectedMessage = "An assignment's id field is missing.";
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, json::toModelType);
+    }
+
+    @Test
     public void toModelType_invalidName_throwsIllegalValueException() {
         JsonAdaptedAssignment json = new JsonAdaptedAssignment(JsonAdaptedAssignmentTest.VALID_ID,
                 JsonAdaptedAssignmentTest.INVALID_NAME,

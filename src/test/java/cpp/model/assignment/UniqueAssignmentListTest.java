@@ -168,7 +168,34 @@ public class UniqueAssignmentListTest {
     }
 
     @Test
-    public void toStringMethod() {
+    public void equals_sameUniqueAssignmentLists_returnsTrue() {
+        UniqueAssignmentList uniqueAssignmentList1 = new UniqueAssignmentList();
+        UniqueAssignmentList uniqueAssignmentList2 = new UniqueAssignmentList();
+        Assertions.assertEquals(uniqueAssignmentList1, uniqueAssignmentList2);
+    }
+
+    @Test
+    public void equals_null_returnsFalse() {
+        Assertions.assertFalse(this.uniqueAssignmentList.equals(null));
+    }
+
+    @Test
+    public void equals_differentUniqueAssignmentLists_returnsFalse() {
+        UniqueAssignmentList uniqueAssignmentList1 = new UniqueAssignmentList();
+        UniqueAssignmentList uniqueAssignmentList2 = new UniqueAssignmentList();
+        uniqueAssignmentList1.add(TypicalAssignments.ASSIGNMENT_ONE);
+        Assertions.assertNotEquals(uniqueAssignmentList1, uniqueAssignmentList2);
+    }
+
+    @Test
+    public void hashCode_sameUniqueAssignmentLists_returnsSameHashCode() {
+        UniqueAssignmentList uniqueAssignmentList1 = new UniqueAssignmentList();
+        UniqueAssignmentList uniqueAssignmentList2 = new UniqueAssignmentList();
+        Assertions.assertEquals(uniqueAssignmentList1.hashCode(), uniqueAssignmentList2.hashCode());
+    }
+
+    @Test
+    public void toString_sameList_equals() {
         Assertions.assertEquals(this.uniqueAssignmentList.asUnmodifiableObservableList().toString(),
                 this.uniqueAssignmentList.toString());
     }

@@ -138,6 +138,36 @@ public class AddressBookTest {
         Assertions.assertTrue(this.addressBook.hasAssignment(assignment));
     }
 
+    @Test
+    public void equals_sameAddressBooks_returnsTrue() {
+        AddressBook addressBook1 = new AddressBook();
+        Assertions.assertEquals(addressBook1, addressBook1);
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        Assertions.assertEquals(addressBook1, addressBook1);
+    }
+
+    @Test
+    public void hashCode_sameAddressBooks_equal() {
+        AddressBook addressBook1 = new AddressBook();
+        AddressBook addressBook2 = new AddressBook();
+        Assertions.assertEquals(addressBook1.hashCode(), addressBook2.hashCode());
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        addressBook2.addPerson(TypicalPersons.ALICE);
+        Assertions.assertEquals(addressBook1.hashCode(), addressBook2.hashCode());
+    }
+
+    @Test
+    public void hashCode_differentAddressBooks_notEqual() {
+        AddressBook addressBook1 = new AddressBook();
+        AddressBook addressBook2 = new AddressBook();
+
+        addressBook1.addPerson(TypicalPersons.ALICE);
+        Assertions.assertNotEquals(addressBook1.hashCode(), addressBook2.hashCode());
+
+        addressBook2.addPerson(TypicalPersons.BOB);
+        Assertions.assertNotEquals(addressBook1.hashCode(), addressBook2.hashCode());
+    }
+
     /**
      * A stub ReadOnlyAddressBook whose persons list can violate interface
      * constraints.

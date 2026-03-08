@@ -8,6 +8,13 @@ import cpp.testutil.AssignmentBuilder;
 public class AssignmentTest {
 
     @Test
+    public void equals_differentType_returnsFalse() {
+        Assignment a = new AssignmentBuilder().build();
+        String s = "Not an assignment";
+        Assertions.assertNotEquals(a, s);
+    }
+
+    @Test
     public void equals_sameIdNameDeadline_returnsTrue() {
         Assignment a1 = new AssignmentBuilder().withId("id1").withName("Assignment X").withDeadline("13-12-2020 10:00")
                 .build();
@@ -20,6 +27,20 @@ public class AssignmentTest {
     public void equals_differentId_returnsFalse() {
         Assignment a1 = new AssignmentBuilder().withId("id1").build();
         Assignment a2 = new AssignmentBuilder().withId("id2").build();
+        Assertions.assertNotEquals(a1, a2);
+    }
+
+    @Test
+    public void equals_differentName_returnsFalse() {
+        Assignment a1 = new AssignmentBuilder().withId("id1").withName("Assignment X").build();
+        Assignment a2 = new AssignmentBuilder().withId("id1").withName("Assignment Y").build();
+        Assertions.assertNotEquals(a1, a2);
+    }
+
+    @Test
+    public void equals_differentDeadline_returnsFalse() {
+        Assignment a1 = new AssignmentBuilder().withId("id1").withDeadline("13-12-2020 10:00").build();
+        Assignment a2 = new AssignmentBuilder().withId("id1").withDeadline("14-12-2020 10:00").build();
         Assertions.assertNotEquals(a1, a2);
     }
 
