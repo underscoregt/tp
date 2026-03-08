@@ -67,10 +67,19 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+    testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.9.3'
+    testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.9.3'
 }
 
 shadowJar {
     archiveFileName = 'cpp.jar'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.junit.platform:junit-platform-commons:1.9.3'
+        force 'org.junit.platform:junit-platform-launcher:1.9.3'
+    }
 }
 
 defaultTasks 'clean', 'test'
