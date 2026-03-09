@@ -83,7 +83,6 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.setContacts(newData.getContactList());
         this.setAssignments(newData.getAssignmentList());
         this.setClassGroups(newData.getClassGroupList());
-        // class groups
     }
 
     //// contact-level operations
@@ -173,6 +172,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void setClassGroup(ClassGroup target, ClassGroup editedClassGroup) {
         Objects.requireNonNull(editedClassGroup);
         this.classGroups.setClassGroup(target, editedClassGroup);
+    }
+
+    /**
+     * Removes ClassGroup {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeClassGroup(ClassGroup key) {
+        this.classGroups.remove(key);
     }
 
     //// util methods
