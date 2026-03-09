@@ -18,13 +18,17 @@ import cpp.logic.commands.FindCommand;
 import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
+import cpp.logic.commands.classgroup.AddClassGroupCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.Assignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import cpp.model.contact.ContactNameContainsKeywordsPredicate;
 import cpp.testutil.Assert;
 import cpp.testutil.AssignmentBuilder;
 import cpp.testutil.AssignmentUtil;
+import cpp.testutil.ClassGroupBuilder;
+import cpp.testutil.ClassGroupUtil;
 import cpp.testutil.ContactBuilder;
 import cpp.testutil.ContactUtil;
 import cpp.testutil.EditContactDescriptorBuilder;
@@ -97,6 +101,14 @@ public class AddressBookParserTest {
         AddAssignmentCommand command = (AddAssignmentCommand) this.parser
                 .parseCommand(AssignmentUtil.getAddAssignmentCommand(assignment));
         Assertions.assertEquals(new AddAssignmentCommand(assignment), command);
+    }
+
+    @Test
+    public void parseCommand_addClassGroup() throws Exception {
+        ClassGroup classGroup = new ClassGroupBuilder().build();
+        AddClassGroupCommand command = (AddClassGroupCommand) this.parser
+                .parseCommand(ClassGroupUtil.getAddClassGroupCommand(classGroup));
+        Assertions.assertEquals(new AddClassGroupCommand(classGroup), command);
     }
 
     @Test

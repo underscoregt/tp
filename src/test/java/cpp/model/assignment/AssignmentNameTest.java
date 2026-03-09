@@ -36,7 +36,7 @@ public class AssignmentNameTest {
     }
 
     @Test
-    public void isValidName_null_returnsFalse() {
+    public void isValidName_null_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () -> AssignmentName.isValidName(null));
     }
 

@@ -13,6 +13,7 @@ import cpp.logic.commands.CommandTestUtil;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import cpp.model.contact.exceptions.DuplicateContactException;
 import cpp.testutil.Assert;
@@ -88,7 +89,8 @@ public class AddressBookTest {
     @Test
     public void toStringMethod() {
         String expected = AddressBook.class.getCanonicalName() + "{contacts=" + this.addressBook.getContactList()
-                + ", assignments=" + this.addressBook.getAssignmentList() + "}";
+                + ", assignments=" + this.addressBook.getAssignmentList()
+                + ", classGroups=" + this.addressBook.getClassGroupList() + "}";
         Assertions.assertEquals(expected, this.addressBook.toString());
     }
 
@@ -192,6 +194,11 @@ public class AddressBookTest {
         @Override
         public ObservableList<ContactAssignment> getContactAssignmentList() {
             throw new UnsupportedOperationException("Method 'getContactAssignmentList' should not be called.");
+        }
+
+        @Override
+        public ObservableList<ClassGroup> getClassGroupList() {
+            throw new UnsupportedOperationException("Method 'getClassGroupList' should not be called.");
         }
     }
 

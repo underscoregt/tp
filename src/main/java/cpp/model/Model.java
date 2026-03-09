@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import cpp.commons.core.GuiSettings;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.ContactAssignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import javafx.collections.ObservableList;
 
@@ -111,4 +112,30 @@ public interface Model {
      * Deregisters and persists the {@code ContactAssignment} unallocation.
      */
     void removeContactAssignment(ContactAssignment ca);
+
+    /**
+     * Returns true if a class group with the same identity as {@code classGroup}
+     * exists in the class group list.
+     */
+    boolean hasClassGroup(ClassGroup classGroup);
+
+    /**
+     * Adds the given class group.
+     */
+    void addClassGroup(ClassGroup classGroup);
+
+    /**
+     * Replaces the given class group {@code target} with {@code editedClassGroup}.
+     * {@code target} must exist in the address book.
+     * The class group identity of {@code editedClassGroup} must not be the same as
+     * another
+     * existing class group in the address book.
+     */
+    void setClassGroup(ClassGroup target, ClassGroup editedClassGroup);
+
+    /**
+     * Deletes the given class group.
+     * The class group must exist in the address book.
+     */
+    void deleteClassGroup(ClassGroup target);
 }

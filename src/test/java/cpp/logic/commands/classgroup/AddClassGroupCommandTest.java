@@ -1,4 +1,4 @@
-package cpp.logic.commands.assignment;
+package cpp.logic.commands.classgroup;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -17,48 +17,48 @@ import cpp.model.Model;
 import cpp.model.ReadOnlyAddressBook;
 import cpp.model.ReadOnlyUserPrefs;
 import cpp.model.assignment.Assignment;
-import cpp.model.assignment.ContactAssignment;
 import cpp.model.classgroup.ClassGroup;
 import cpp.testutil.Assert;
-import cpp.testutil.AssignmentBuilder;
-import cpp.testutil.TypicalAssignments;
+import cpp.testutil.ClassGroupBuilder;
+import cpp.testutil.TypicalClassGroups;
 import javafx.collections.ObservableList;
 
-public class AddAssignmentCommandTest {
+public class AddClassGroupCommandTest {
 
     @Test
-    public void constructor_nullAssignment_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> new AddAssignmentCommand(null));
+    public void constructor_nullClassGroup_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> new AddClassGroupCommand(null));
     }
 
     @Test
-    public void execute_assignmentAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingAssignmentAdded modelStub = new ModelStubAcceptingAssignmentAdded();
-        Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
+    public void execute_classGroupAcceptedByModel_addSuccessful() throws Exception {
+        ModelStubAcceptingClassGroupAdded modelStub = new ModelStubAcceptingClassGroupAdded();
+        ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
 
-        CommandResult commandResult = new AddAssignmentCommand(validAssignment).execute(modelStub);
+        CommandResult commandResult = new AddClassGroupCommand(validClassGroup).execute(modelStub);
 
-        Assertions.assertEquals(String.format(AddAssignmentCommand.MESSAGE_SUCCESS, Messages.format(validAssignment)),
+        Assertions.assertEquals(
+                String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(validClassGroup)),
                 commandResult.getFeedbackToUser());
-        Assertions.assertEquals(1, modelStub.assignmentsAdded.size());
-        Assertions.assertEquals(validAssignment, modelStub.assignmentsAdded.get(0));
+        Assertions.assertEquals(1, modelStub.classGroupsAdded.size());
+        Assertions.assertEquals(validClassGroup, modelStub.classGroupsAdded.get(0));
     }
 
     @Test
-    public void execute_duplicateAssignment_throwsCommandException() {
-        Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addCommand = new AddAssignmentCommand(validAssignment);
-        ModelStub modelStub = new ModelStubWithAssignment(validAssignment);
+    public void execute_duplicateClassGroup_throwsCommandException() {
+        ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(validClassGroup);
+        ModelStub modelStub = new ModelStubWithClassGroup(validClassGroup);
 
-        Assert.assertThrows(CommandException.class, AddAssignmentCommand.MESSAGE_DUPLICATE_ASSIGNMENT,
+        Assert.assertThrows(CommandException.class, AddClassGroupCommand.MESSAGE_DUPLICATE_CLASS_GROUP,
                 () -> addCommand.execute(modelStub));
     }
 
     @Test
     public void equals_sameValues_returnsTrue() {
-        Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addCommand = new AddAssignmentCommand(assignment);
-        AddAssignmentCommand addCommandCopy = new AddAssignmentCommand(assignment);
+        ClassGroup classGroup = TypicalClassGroups.CLASS_GROUP_ONE;
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup);
+        AddClassGroupCommand addCommandCopy = new AddClassGroupCommand(classGroup);
 
         // same object -> true
         Assertions.assertTrue(addCommand.equals(addCommand));
@@ -69,8 +69,8 @@ public class AddAssignmentCommandTest {
 
     @Test
     public void equals_differentValues_returnsFalse() {
-        Assignment assignment = TypicalAssignments.ASSIGNMENT_ONE;
-        AddAssignmentCommand addCommand = new AddAssignmentCommand(assignment);
+        ClassGroup classGroup = TypicalClassGroups.CLASS_GROUP_ONE;
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup);
 
         // different types -> false
         Assertions.assertFalse(addCommand.equals(1));
@@ -78,18 +78,17 @@ public class AddAssignmentCommandTest {
         // null -> false
         Assertions.assertFalse(addCommand.equals(null));
 
-        // different assignment -> false
-        Assignment different = new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_ONE)
-                .withName("Different").build();
-        AddAssignmentCommand differentCommand = new AddAssignmentCommand(different);
+        // different class group -> false
+        ClassGroup different = new ClassGroupBuilder(classGroup).withName("CS2101T10").build();
+        AddClassGroupCommand differentCommand = new AddClassGroupCommand(different);
         Assertions.assertFalse(addCommand.equals(differentCommand));
     }
 
     @Test
     public void toString_typicalValue_correctOutput() {
-        AddAssignmentCommand addCommand = new AddAssignmentCommand(TypicalAssignments.ASSIGNMENT_ONE);
-        String expected = AddAssignmentCommand.class.getCanonicalName() + "{toAddAssignment="
-                + TypicalAssignments.ASSIGNMENT_ONE + "}";
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(TypicalClassGroups.CLASS_GROUP_ONE);
+        String expected = AddClassGroupCommand.class.getCanonicalName() + "{toAdd="
+                + TypicalClassGroups.CLASS_GROUP_ONE + "}";
         Assertions.assertEquals(expected, addCommand.toString());
     }
 
@@ -178,17 +177,7 @@ public class AddAssignmentCommandTest {
         }
 
         @Override
-        public void addContactAssignment(ContactAssignment ca) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public boolean hasClassGroup(ClassGroup classGroup) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void removeContactAssignment(ContactAssignment ca) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -209,39 +198,39 @@ public class AddAssignmentCommandTest {
     }
 
     /**
-     * A Model stub that contains a single assignment.
+     * A Model stub that contains a single class group.
      */
-    private class ModelStubWithAssignment extends ModelStub {
-        private final Assignment assignment;
+    private class ModelStubWithClassGroup extends ModelStub {
+        private final ClassGroup classGroup;
 
-        ModelStubWithAssignment(Assignment assignment) {
-            Objects.requireNonNull(assignment);
-            this.assignment = assignment;
+        ModelStubWithClassGroup(ClassGroup classGroup) {
+            Objects.requireNonNull(classGroup);
+            this.classGroup = classGroup;
         }
 
         @Override
-        public boolean hasAssignment(Assignment assignment) {
-            Objects.requireNonNull(assignment);
-            return this.assignment.getName().equals(assignment.getName());
+        public boolean hasClassGroup(ClassGroup classGroup) {
+            Objects.requireNonNull(classGroup);
+            return this.classGroup.getName().equals(classGroup.getName());
         }
     }
 
     /**
-     * A Model stub that always accept the assignment being added.
+     * A Model stub that always accepts the class group being added.
      */
-    private class ModelStubAcceptingAssignmentAdded extends ModelStub {
-        final ArrayList<Assignment> assignmentsAdded = new ArrayList<>();
+    private class ModelStubAcceptingClassGroupAdded extends ModelStub {
+        final ArrayList<ClassGroup> classGroupsAdded = new ArrayList<>();
 
         @Override
-        public boolean hasAssignment(Assignment assignment) {
-            Objects.requireNonNull(assignment);
-            return this.assignmentsAdded.stream().anyMatch(a -> a.getName().equals(assignment.getName()));
+        public boolean hasClassGroup(ClassGroup classGroup) {
+            Objects.requireNonNull(classGroup);
+            return this.classGroupsAdded.stream().anyMatch(cg -> cg.getName().equals(classGroup.getName()));
         }
 
         @Override
-        public void addAssignment(Assignment assignment) {
-            Objects.requireNonNull(assignment);
-            this.assignmentsAdded.add(assignment);
+        public void addClassGroup(ClassGroup classGroup) {
+            Objects.requireNonNull(classGroup);
+            this.classGroupsAdded.add(classGroup);
         }
 
         @Override

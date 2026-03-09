@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.parser.exceptions.ParseException;
+import cpp.model.assignment.AssignmentName;
 import cpp.model.contact.Address;
 import cpp.model.contact.ContactName;
 import cpp.model.contact.Email;
@@ -244,7 +245,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseAssignmentName_validValueWithoutWhitespace_returnsName() throws Exception {
-        cpp.model.assignment.AssignmentName expectedName = new cpp.model.assignment.AssignmentName(
+        AssignmentName expectedName = new AssignmentName(
                 ParserUtilTest.VALID_ASSIGNMENT_NAME);
         Assertions.assertEquals(expectedName, ParserUtil.parseAssignmentName(ParserUtilTest.VALID_ASSIGNMENT_NAME));
     }
@@ -253,7 +254,7 @@ public class ParserUtilTest {
     public void parseAssignmentName_validValueWithWhitespace_returnsTrimmedName() throws Exception {
         String nameWithWhitespace = ParserUtilTest.WHITESPACE + ParserUtilTest.VALID_ASSIGNMENT_NAME
                 + ParserUtilTest.WHITESPACE;
-        cpp.model.assignment.AssignmentName expectedName = new cpp.model.assignment.AssignmentName(
+        AssignmentName expectedName = new AssignmentName(
                 ParserUtilTest.VALID_ASSIGNMENT_NAME);
         Assertions.assertEquals(expectedName, ParserUtil.parseAssignmentName(nameWithWhitespace));
     }

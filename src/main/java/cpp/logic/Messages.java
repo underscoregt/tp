@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import cpp.logic.parser.ParserUtil;
 import cpp.logic.parser.Prefix;
 import cpp.model.assignment.Assignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 
 /**
@@ -57,6 +58,15 @@ public class Messages {
         builder.append(assignment.getName())
                 .append("; Deadline: ")
                 .append(assignment.getDeadline().format(ParserUtil.DEADLINE_FORMATTER));
+        return builder.toString();
+    }
+
+    /**
+     * Formats the {@code classGroup} for display to the user.
+     */
+    public static String format(ClassGroup classGroup) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(classGroup.getName());
         return builder.toString();
     }
 

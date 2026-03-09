@@ -8,6 +8,8 @@ import cpp.model.assignment.Assignment;
 import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.UniqueAssignmentList;
 import cpp.model.assignment.UniqueContactAssignmentList;
+import cpp.model.classgroup.ClassGroup;
+import cpp.model.classgroup.UniqueClassGroupList;
 import cpp.model.contact.Contact;
 import cpp.model.contact.UniqueContactList;
 import javafx.collections.ObservableList;
@@ -21,6 +23,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     private final UniqueContactList contacts;
     private final UniqueAssignmentList assignments;
     private final UniqueContactAssignmentList contactAssignments;
+    private final UniqueClassGroupList classGroups;
 
     /*
      * The 'unusual' code block below is a non-static initialization block,
@@ -35,6 +38,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.contacts = new UniqueContactList();
         this.assignments = new UniqueAssignmentList();
         this.contactAssignments = new UniqueContactAssignmentList();
+        this.classGroups = new UniqueClassGroupList();
     }
 
     public AddressBook() {
@@ -76,6 +80,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the contents of the class group list with {@code classGroups}
+     * {@code classGroups} must not contain duplicate class groups
+     */
+    public void setClassGroups(List<ClassGroup> classGroups) {
+        this.classGroups.setClassGroups(classGroups);
+    }
+
+    /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
     public void resetData(ReadOnlyAddressBook newData) {
@@ -84,6 +96,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.setContacts(newData.getContactList());
         this.setAssignments(newData.getAssignmentList());
         this.setContactAssignments(newData.getContactAssignmentList());
+        this.setClassGroups(newData.getClassGroupList());
     }
 
     //// contact-level operations
@@ -114,7 +127,6 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void setContact(Contact target, Contact editedContact) {
         Objects.requireNonNull(editedContact);
-
         this.contacts.setContact(target, editedContact);
     }
 
@@ -189,6 +201,45 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.contactAssignments.remove(contactAssignment);
     }
 
+    /**
+     * Returns true if a class group with the same identity as {@code classGroup}
+     * exists in the address book.
+     */
+    public boolean hasClassGroup(ClassGroup classGroup) {
+        Objects.requireNonNull(classGroup);
+        return this.classGroups.contains(classGroup);
+    }
+
+    /**
+     * Adds a class group to the address book.
+     * The class group must not already exist in the address book.
+     */
+    public void addClassGroup(ClassGroup classGroup) {
+        Objects.requireNonNull(classGroup);
+        this.classGroups.add(classGroup);
+    }
+
+    /**
+     * Replaces the given class group {@code target} in the list with
+     * {@code editedClassGroup}.
+     *
+     * {@code target} must exist in the address book.
+     * The class group identity of {@code editedClassGroup} must not be the same as
+     * another existing class group in the address book.
+     */
+    public void setClassGroup(ClassGroup target, ClassGroup editedClassGroup) {
+        Objects.requireNonNull(editedClassGroup);
+        this.classGroups.setClassGroup(target, editedClassGroup);
+    }
+
+    /**
+     * Removes ClassGroup {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeClassGroup(ClassGroup key) {
+        this.classGroups.remove(key);
+    }
+
     //// util methods
 
     @Override
@@ -196,6 +247,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return new ToStringBuilder(this)
                 .add("contacts", this.contacts)
                 .add("assignments", this.assignments)
+                .add("classGroups", this.classGroups)
                 .toString();
     }
 
@@ -215,6 +267,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
+    public ObservableList<ClassGroup> getClassGroupList() {
+        return this.classGroups.asUnmodifiableObservableList();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
@@ -228,11 +285,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         AddressBook otherAddressBook = (AddressBook) other;
         return this.contacts.equals(otherAddressBook.contacts)
                 && this.assignments.equals(otherAddressBook.assignments)
-                && this.contactAssignments.equals(otherAddressBook.contactAssignments);
+                && this.contactAssignments.equals(otherAddressBook.contactAssignments)
+                && this.classGroups.equals(otherAddressBook.classGroups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.contacts, this.assignments, this.contactAssignments);
+        return Objects.hash(this.contacts, this.assignments, this.contactAssignments, this.classGroups);
     }
 }
