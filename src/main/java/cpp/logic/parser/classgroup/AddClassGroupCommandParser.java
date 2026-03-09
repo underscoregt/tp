@@ -28,17 +28,17 @@ public class AddClassGroupCommandParser implements Parser<AddClassGroupCommand> 
      */
     @Override
     public AddClassGroupCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_NAME);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_CLASS);
 
-        if (!AddClassGroupCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_NAME)
+        if (!AddClassGroupCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_CLASS)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddClassGroupCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_NAME);
+        argMultimap.verifyNoDuplicatePrefixesFor(CliSyntax.PREFIX_CLASS);
 
-        ClassGroupName name = ParserUtil.parseClassGroupName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
+        ClassGroupName name = ParserUtil.parseClassGroupName(argMultimap.getValue(CliSyntax.PREFIX_CLASS).get());
 
         ClassGroup classGroup = new ClassGroup(name);
 

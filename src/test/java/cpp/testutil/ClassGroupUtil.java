@@ -21,6 +21,6 @@ public class ClassGroupUtil {
      * details.
      */
     public static String getClassGroupDetails(ClassGroup classGroup) {
-        return " " + CliSyntax.PREFIX_NAME + classGroup.getName().fullName + " ";
+        return " " + CliSyntax.PREFIX_CLASS + classGroup.getName().fullName + " ";
     }
 }

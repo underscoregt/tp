@@ -20,9 +20,9 @@ public class AddClassGroupCommand extends Command {
 
     public static final String MESSAGE_USAGE = AddClassGroupCommand.COMMAND_WORD + ": Defines a new class grouping. "
             + "Parameters: "
-            + CliSyntax.PREFIX_NAME + "NAME\n"
+            + CliSyntax.PREFIX_CLASS + "NAME\n"
             + "Example: " + AddClassGroupCommand.COMMAND_WORD + " "
-            + CliSyntax.PREFIX_NAME + "CS2103T10 ";
+            + CliSyntax.PREFIX_CLASS + "CS2103T10 ";
 
     public static final String MESSAGE_SUCCESS = "New class grouping added: %1$s";
     public static final String MESSAGE_DUPLICATE_CLASS_GROUP = "This class grouping already exists in the address book";

@@ -33,6 +33,7 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
+    public static final String VALID_CLASS_NAME_CS2103T = "CS2103T";
 
     public static final String NAME_DESC_AMY = " " + CliSyntax.PREFIX_NAME + CommandTestUtil.VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + CliSyntax.PREFIX_NAME + CommandTestUtil.VALID_NAME_BOB;
@@ -51,6 +52,7 @@ public class CommandTestUtil {
     // empty string not allowed for addresses
     public static final String INVALID_ADDRESS_DESC = " " + CliSyntax.PREFIX_ADDRESS;
     public static final String INVALID_TAG_DESC = " " + CliSyntax.PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_CLASS_NAME_DESC = " " + CliSyntax.PREFIX_CLASS + "CS2103T&";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

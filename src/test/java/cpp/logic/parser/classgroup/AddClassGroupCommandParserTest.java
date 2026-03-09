@@ -44,7 +44,7 @@ public class AddClassGroupCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid name
         CommandParserTestUtil.assertParseFailure(this.parser,
-                CommandTestUtil.INVALID_NAME_DESC,
+                CommandTestUtil.INVALID_CLASS_NAME_DESC,
                 ClassGroupName.MESSAGE_CONSTRAINTS);
     }
 
