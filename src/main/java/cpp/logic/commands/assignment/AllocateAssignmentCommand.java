@@ -71,6 +71,8 @@ public class AllocateAssignmentCommand extends Command {
 
         List<Contact> lastShownContactList = model.getFilteredContactList();
 
+        this.checkContactIndices(lastShownContactList);
+
         return this.allocateToContacts(model, assignmentToAllocate, lastShownContactList);
     }
 
@@ -94,6 +96,14 @@ public class AllocateAssignmentCommand extends Command {
                 .toString();
     }
 
+    private void checkContactIndices(List<Contact> lastShownContactList) throws CommandException {
+        for (Index idx : this.contactIndices) {
+            if (idx.getZeroBased() >= lastShownContactList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
+            }
+        }
+    }
+
     private CommandResult allocateToContacts(Model model, Assignment assignmentToAllocate,
             List<Contact> lastShownContactList) throws CommandException {
         StringBuilder allocatedContacts = new StringBuilder();
@@ -101,10 +111,6 @@ public class AllocateAssignmentCommand extends Command {
         int allocatedCount = 0;
 
         for (Index idx : this.contactIndices) {
-            if (idx.getZeroBased() >= lastShownContactList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_CONTACT_DISPLAYED_INDEX);
-            }
-
             Contact contact = lastShownContactList.get(idx.getZeroBased());
             ContactAssignment ca = new ContactAssignment(assignmentToAllocate.getId(), contact.getId());
 
