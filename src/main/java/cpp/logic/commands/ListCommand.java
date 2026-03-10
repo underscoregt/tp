@@ -22,15 +22,14 @@ public class ListCommand extends Command {
     public CommandResult execute(Model model) {
         Objects.requireNonNull(model);
         model.updateFilteredContactList(Model.PREDICATE_SHOW_ALL_CONTACTS);
+        if (this.listType.equals("assignments")) {
+            return new CommandResult(ListCommand.MESSAGE_ASSIGNMENTS);
+        }
         return new CommandResult(ListCommand.MESSAGE_SUCCESS);
     }
 
     public ListCommand(String listType) {
         this.listType = listType;
-    }
-
-    public ListCommand() {
-        this.listType = "contacts";
     }
 
     @Override

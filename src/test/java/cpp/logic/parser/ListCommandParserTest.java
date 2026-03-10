@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import cpp.logic.Messages;
 import cpp.logic.commands.ListCommand;
 
-public class ListCommandTestParser {
+public class ListCommandParserTest {
     private ListCommandParser parser = new ListCommandParser();
 
     @Test

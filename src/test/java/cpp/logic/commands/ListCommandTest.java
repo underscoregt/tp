@@ -26,14 +26,14 @@ public class ListCommandTest {
 
     @Test
     public void execute_listIsNotFiltered_showsSameList() {
-        CommandTestUtil.assertCommandSuccess(new ListCommand(), this.model, ListCommand.MESSAGE_SUCCESS,
+        CommandTestUtil.assertCommandSuccess(new ListCommand("contacts"), this.model, ListCommand.MESSAGE_SUCCESS,
                 this.expectedModel);
     }
 
     @Test
     public void execute_listIsFiltered_showsEverything() {
         CommandTestUtil.showContactAtIndex(this.model, TypicalIndexes.INDEX_FIRST_CONTACT);
-        CommandTestUtil.assertCommandSuccess(new ListCommand(), this.model, ListCommand.MESSAGE_SUCCESS,
+        CommandTestUtil.assertCommandSuccess(new ListCommand("contacts"), this.model, ListCommand.MESSAGE_SUCCESS,
                 this.expectedModel);
     }
 }

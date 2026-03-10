@@ -13,7 +13,7 @@ public class ListCommandParser implements Parser<ListCommand> {
     public ListCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
         try {
-            if (trimmedArgs.isEmpty() || trimmedArgs.equals("contacts")) {
+            if (trimmedArgs.equals("contacts")) {
                 return new ListCommand("contacts");
             } else if (trimmedArgs.equals("assignments")) {
                 return new ListCommand("assignments");
