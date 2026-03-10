@@ -18,9 +18,11 @@ import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.assignment.AllocateAssignmentCommand;
 import cpp.logic.commands.classgroup.AddClassGroupCommand;
+import cpp.logic.commands.classgroup.AllocateClassGroupCommand;
 import cpp.logic.parser.assignment.AddAssignmentCommandParser;
 import cpp.logic.parser.assignment.AllocateAssignmentCommandParser;
 import cpp.logic.parser.classgroup.AddClassGroupCommandParser;
+import cpp.logic.parser.classgroup.AllocateClassGroupCommandParser;
 import cpp.logic.parser.exceptions.ParseException;
 
 /**
@@ -90,6 +92,9 @@ public class AddressBookParser {
 
         case AddClassGroupCommand.COMMAND_WORD:
             return new AddClassGroupCommandParser().parse(arguments);
+
+        case AllocateClassGroupCommand.COMMAND_WORD:
+            return new AllocateClassGroupCommandParser().parse(arguments);
 
         default:
             AddressBookParser.logger.finer("This user input caused a ParseException: " + userInput);
