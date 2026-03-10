@@ -19,6 +19,7 @@ import cpp.model.ReadOnlyUserPrefs;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.ContactAssignment;
 import cpp.model.classgroup.ClassGroup;
+import cpp.model.contact.Contact;
 import cpp.testutil.Assert;
 import cpp.testutil.AssignmentBuilder;
 import cpp.testutil.TypicalAssignments;
@@ -128,7 +129,7 @@ public class AddAssignmentCommandTest {
         }
 
         @Override
-        public void addContact(cpp.model.contact.Contact contact) {
+        public void addContact(Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -143,27 +144,27 @@ public class AddAssignmentCommandTest {
         }
 
         @Override
-        public boolean hasContact(cpp.model.contact.Contact contact) {
+        public boolean hasContact(Contact contact) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void deleteContact(cpp.model.contact.Contact target) {
+        public void deleteContact(Contact target) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setContact(cpp.model.contact.Contact target, cpp.model.contact.Contact editedContact) {
+        public void setContact(Contact target, Contact editedContact) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ObservableList<cpp.model.contact.Contact> getFilteredContactList() {
+        public ObservableList<Contact> getFilteredContactList() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredContactList(Predicate<cpp.model.contact.Contact> predicate) {
+        public void updateFilteredContactList(Predicate<Contact> predicate) {
             throw new AssertionError("This method should not be called.");
         }
 
