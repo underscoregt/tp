@@ -17,7 +17,7 @@ public class ListClassCommand extends ListCommand {
     public CommandResult execute(Model model) {
         Objects.requireNonNull(model);
         model.updateFilteredContactList(Model.PREDICATE_SHOW_ALL_CONTACTS);
-        return new CommandResult(ListCommand.MESSAGE_CLASSES);
+        return new CommandResult(ListCommand.MESSAGE_CLASSES, CommandResult.ListView.CLASSGROUPS);
     }
 
     @Override

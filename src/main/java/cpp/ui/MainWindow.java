@@ -188,13 +188,21 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     private void handleListCommand(CommandResult commandResult) {
-        String feedback = commandResult.getFeedbackToUser();
-        if (feedback.equals("Listed all contacts")) {
+        CommandResult.ListView listView = commandResult.getListView();
+        switch (listView) {
+        case CONTACTS:
             this.mainTabPane.getSelectionModel().select(this.contactsTab);
-        } else if (feedback.equals("Listed all classes")) {
+            break;
+        case CLASSGROUPS:
             this.mainTabPane.getSelectionModel().select(this.classesTab);
-        } else if (feedback.equals("Listed all assignments")) {
+            break;
+        case ASSIGNMENTS:
             this.mainTabPane.getSelectionModel().select(this.assignmentsTab);
+            break;
+        case NONE:
+        default:
+            // Do nothing when list view is NONE
+            break;
         }
     }
 
