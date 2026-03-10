@@ -35,6 +35,8 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private ContactListPanel contactListPanel;
+    private AssignmentListPanel assignmentListPanel;
+    private ClassGroupListPanel classGroupListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -127,7 +129,12 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         this.contactListPanel = new ContactListPanel(this.logic.getFilteredContactList());
-        this.contactListPanelPlaceholder.getChildren().add(this.contactListPanel.getRoot());
+        this.assignmentListPanel = new AssignmentListPanel(this.logic.getFilteredAssignmentList());
+        this.classGroupListPanel = new ClassGroupListPanel(this.logic.getFilteredClassGroupList());
+        this.contactListPanelPlaceholder.getChildren().addAll(
+                this.contactListPanel.getRoot(),
+                this.assignmentListPanel.getRoot(),
+                this.classGroupListPanel.getRoot());
 
         this.resultDisplay = new ResultDisplay();
         this.resultDisplayPlaceholder.getChildren().add(this.resultDisplay.getRoot());
@@ -144,6 +151,7 @@ public class MainWindow extends UiPart<Stage> {
                 this.mainTabPane.getSelectionModel().select(this.assignmentsTab);
                 this.mainTabPane.getSelectionModel().select(this.contactsTab);
             }
+            this.handleListCommand(new CommandResult("", CommandResult.ListView.CONTACTS));
         });
     }
 
@@ -191,13 +199,19 @@ public class MainWindow extends UiPart<Stage> {
         CommandResult.ListView listView = commandResult.getListView();
         switch (listView) {
         case CONTACTS:
-            this.mainTabPane.getSelectionModel().select(this.contactsTab);
-            break;
-        case CLASSGROUPS:
-            this.mainTabPane.getSelectionModel().select(this.classesTab);
+            this.contactListPanel.getRoot().setVisible(true);
+            this.assignmentListPanel.getRoot().setVisible(false);
+            this.classGroupListPanel.getRoot().setVisible(false);
             break;
         case ASSIGNMENTS:
-            this.mainTabPane.getSelectionModel().select(this.assignmentsTab);
+            this.contactListPanel.getRoot().setVisible(false);
+            this.assignmentListPanel.getRoot().setVisible(true);
+            this.classGroupListPanel.getRoot().setVisible(false);
+            break;
+        case CLASSGROUPS:
+            this.contactListPanel.getRoot().setVisible(false);
+            this.assignmentListPanel.getRoot().setVisible(false);
+            this.classGroupListPanel.getRoot().setVisible(true);
             break;
         case NONE:
         default:
@@ -208,6 +222,14 @@ public class MainWindow extends UiPart<Stage> {
 
     public ContactListPanel getContactListPanel() {
         return this.contactListPanel;
+    }
+
+    public AssignmentListPanel getAssignmentListPanel() {
+        return this.assignmentListPanel;
+    }
+
+    public ClassGroupListPanel getClassGroupListPanel() {
+        return this.classGroupListPanel;
     }
 
     /**

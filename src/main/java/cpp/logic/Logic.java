@@ -7,6 +7,8 @@ import cpp.logic.commands.CommandResult;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.ReadOnlyAddressBook;
+import cpp.model.assignment.Assignment;
+import cpp.model.classgroup.ClassGroup;
 import cpp.model.contact.Contact;
 import javafx.collections.ObservableList;
 
@@ -33,6 +35,12 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the filtered list of contacts */
     ObservableList<Contact> getFilteredContactList();
+
+    /** Returns an unmodifiable view of the filtered list of assignments */
+    ObservableList<Assignment> getFilteredAssignmentList();
+
+    /** Returns an unmodifiable view of the filtered list of class groups */
+    ObservableList<ClassGroup> getFilteredClassGroupList();
 
     /**
      * Returns the user prefs' address book file path.

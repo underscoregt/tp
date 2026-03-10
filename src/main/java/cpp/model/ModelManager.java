@@ -28,6 +28,8 @@ public class ModelManager implements Model {
     private final AssignmentManager assignmentManager;
     private final UserPrefs userPrefs;
     private final FilteredList<Contact> filteredContacts;
+    private final FilteredList<Assignment> filteredAssignments;
+    private final FilteredList<ClassGroup> filteredClassGroups;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -41,6 +43,8 @@ public class ModelManager implements Model {
         this.assignmentManager = new AssignmentManager(addressBook.getContactAssignmentList());
         this.userPrefs = new UserPrefs(userPrefs);
         this.filteredContacts = new FilteredList<>(this.addressBook.getContactList());
+        this.filteredAssignments = new FilteredList<>(this.addressBook.getAssignmentList());
+        this.filteredClassGroups = new FilteredList<>(this.addressBook.getClassGroupList());
     }
 
     public ModelManager() {
@@ -197,6 +201,28 @@ public class ModelManager implements Model {
     public void updateFilteredContactList(Predicate<Contact> predicate) {
         Objects.requireNonNull(predicate);
         this.filteredContacts.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<Assignment> getFilteredAssignmentList() {
+        return this.filteredAssignments;
+    }
+
+    @Override
+    public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+        Objects.requireNonNull(predicate);
+        this.filteredAssignments.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<ClassGroup> getFilteredClassGroupList() {
+        return this.filteredClassGroups;
+    }
+
+    @Override
+    public void updateFilteredClassGroupList(Predicate<ClassGroup> predicate) {
+        Objects.requireNonNull(predicate);
+        this.filteredClassGroups.setPredicate(predicate);
     }
 
     @Override

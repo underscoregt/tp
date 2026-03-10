@@ -22,6 +22,7 @@ import cpp.model.classgroup.ClassGroup;
 import cpp.testutil.Assert;
 import cpp.testutil.ClassGroupBuilder;
 import cpp.testutil.TypicalClassGroups;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class AddClassGroupCommandTest {
@@ -205,6 +206,26 @@ public class AddClassGroupCommandTest {
         @Override
         public void deleteClassGroup(ClassGroup target) {
             throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Assignment> getFilteredAssignmentList() {
+            return FXCollections.observableArrayList();
+        }
+
+        @Override
+        public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+            // Empty implementation
+        }
+
+        @Override
+        public ObservableList<ClassGroup> getFilteredClassGroupList() {
+            return FXCollections.observableArrayList();
+        }
+
+        @Override
+        public void updateFilteredClassGroupList(Predicate<ClassGroup> predicate) {
+            // Empty implementation
         }
     }
 
