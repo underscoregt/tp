@@ -1,5 +1,6 @@
 package cpp.logic.parser;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -108,7 +109,7 @@ public class AddressBookParserTest {
         ClassGroup classGroup = new ClassGroupBuilder().build();
         AddClassGroupCommand command = (AddClassGroupCommand) this.parser
                 .parseCommand(ClassGroupUtil.getAddClassGroupCommand(classGroup));
-        Assertions.assertEquals(new AddClassGroupCommand(classGroup), command);
+        Assertions.assertEquals(new AddClassGroupCommand(classGroup, new ArrayList<>()), command);
     }
 
     @Test

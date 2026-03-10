@@ -28,7 +28,7 @@ public class AddClassGroupCommandTest {
 
     @Test
     public void constructor_nullClassGroup_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> new AddClassGroupCommand(null));
+        Assert.assertThrows(NullPointerException.class, () -> new AddClassGroupCommand(null, null));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AddClassGroupCommandTest {
         ModelStubAcceptingClassGroupAdded modelStub = new ModelStubAcceptingClassGroupAdded();
         ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
 
-        CommandResult commandResult = new AddClassGroupCommand(validClassGroup).execute(modelStub);
+        CommandResult commandResult = new AddClassGroupCommand(validClassGroup, new ArrayList<>()).execute(modelStub);
 
         Assertions.assertEquals(
                 String.format(AddClassGroupCommand.MESSAGE_SUCCESS, Messages.format(validClassGroup)),
@@ -48,7 +48,7 @@ public class AddClassGroupCommandTest {
     @Test
     public void execute_duplicateClassGroup_throwsCommandException() {
         ClassGroup validClassGroup = TypicalClassGroups.CLASS_GROUP_ONE;
-        AddClassGroupCommand addCommand = new AddClassGroupCommand(validClassGroup);
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(validClassGroup, new ArrayList<>());
         ModelStub modelStub = new ModelStubWithClassGroup(validClassGroup);
 
         Assert.assertThrows(CommandException.class, AddClassGroupCommand.MESSAGE_DUPLICATE_CLASS_GROUP,
@@ -58,8 +58,8 @@ public class AddClassGroupCommandTest {
     @Test
     public void equals_sameValues_returnsTrue() {
         ClassGroup classGroup = TypicalClassGroups.CLASS_GROUP_ONE;
-        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup);
-        AddClassGroupCommand addCommandCopy = new AddClassGroupCommand(classGroup);
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup, new ArrayList<>());
+        AddClassGroupCommand addCommandCopy = new AddClassGroupCommand(classGroup, new ArrayList<>());
 
         // same object -> true
         Assertions.assertTrue(addCommand.equals(addCommand));
@@ -71,7 +71,7 @@ public class AddClassGroupCommandTest {
     @Test
     public void equals_differentValues_returnsFalse() {
         ClassGroup classGroup = TypicalClassGroups.CLASS_GROUP_ONE;
-        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup);
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(classGroup, new ArrayList<>());
 
         // different types -> false
         Assertions.assertFalse(addCommand.equals(1));
@@ -81,15 +81,16 @@ public class AddClassGroupCommandTest {
 
         // different class group -> false
         ClassGroup different = new ClassGroupBuilder(classGroup).withName("CS2101T10").build();
-        AddClassGroupCommand differentCommand = new AddClassGroupCommand(different);
+        AddClassGroupCommand differentCommand = new AddClassGroupCommand(different, new ArrayList<>());
         Assertions.assertFalse(addCommand.equals(differentCommand));
     }
 
     @Test
     public void toString_typicalValue_correctOutput() {
-        AddClassGroupCommand addCommand = new AddClassGroupCommand(TypicalClassGroups.CLASS_GROUP_ONE);
+        AddClassGroupCommand addCommand = new AddClassGroupCommand(TypicalClassGroups.CLASS_GROUP_ONE,
+                new ArrayList<>());
         String expected = AddClassGroupCommand.class.getCanonicalName() + "{toAdd="
-                + TypicalClassGroups.CLASS_GROUP_ONE + "}";
+                + TypicalClassGroups.CLASS_GROUP_ONE + ", contactIndices=" + new ArrayList<>() + "}";
         Assertions.assertEquals(expected, addCommand.toString());
     }
 
@@ -248,6 +249,10 @@ public class AddClassGroupCommandTest {
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
         }
-    }
 
+        @Override
+        public ObservableList<cpp.model.contact.Contact> getFilteredContactList() {
+            return new AddressBook().getContactList();
+        }
+    }
 }

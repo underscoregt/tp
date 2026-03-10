@@ -1,5 +1,7 @@
 package cpp.logic.parser.classgroup;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import cpp.logic.Messages;
@@ -22,7 +24,7 @@ public class AddClassGroupCommandParserTest {
         // whitespace only preamble
         CommandParserTestUtil.assertParseSuccess(this.parser,
                 CommandTestUtil.PREAMBLE_WHITESPACE + ClassGroupUtil.getClassGroupDetails(expectedClassGroup),
-                new AddClassGroupCommand(expectedClassGroup));
+                new AddClassGroupCommand(expectedClassGroup, new ArrayList<>()));
     }
 
     @Test
