@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
-import cpp.logic.commands.DeleteCommand;
 import cpp.logic.commands.CommandResult;
+import cpp.logic.commands.DeleteCommand;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.Model;
 import cpp.model.assignment.Assignment;
