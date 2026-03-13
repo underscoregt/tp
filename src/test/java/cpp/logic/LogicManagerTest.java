@@ -66,6 +66,60 @@ public class LogicManagerTest {
     }
 
     @Test
+    public void execute_listAssignmentsCommand_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " assignments";
+        this.assertCommandSuccess(listCommand, ListCommand.MESSAGE_ASSIGNMENTS, this.model);
+    }
+
+    @Test
+    public void execute_listClassesCommand_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " classes";
+        this.assertCommandSuccess(listCommand, ListCommand.MESSAGE_CLASSES, this.model);
+    }
+
+    @Test
+    public void execute_listContactsExplicit_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " contacts";
+        CommandResult result = this.logic.execute(listCommand);
+        Assertions.assertEquals(ListCommand.MESSAGE_CONTACTS, result.getFeedbackToUser());
+        Assertions.assertEquals(CommandResult.ListView.CONTACTS, result.getListView());
+    }
+
+    @Test
+    public void execute_listAssignmentsExplicit_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " assignments";
+        CommandResult result = this.logic.execute(listCommand);
+        Assertions.assertEquals(ListCommand.MESSAGE_ASSIGNMENTS, result.getFeedbackToUser());
+        Assertions.assertEquals(CommandResult.ListView.ASSIGNMENTS, result.getListView());
+    }
+
+    @Test
+    public void execute_listClassesExplicit_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " classes";
+        CommandResult result = this.logic.execute(listCommand);
+        Assertions.assertEquals(ListCommand.MESSAGE_CLASSES, result.getFeedbackToUser());
+        Assertions.assertEquals(CommandResult.ListView.CLASSGROUPS, result.getListView());
+    }
+
+    @Test
+    public void execute_listCommandCaseInsensitive_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " CONTACTS";
+        this.assertCommandSuccess(listCommand, ListCommand.MESSAGE_CONTACTS, this.model);
+    }
+
+    @Test
+    public void execute_listAssignmentsCaseInsensitive_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " ASSIGNMENTS";
+        this.assertCommandSuccess(listCommand, ListCommand.MESSAGE_ASSIGNMENTS, this.model);
+    }
+
+    @Test
+    public void execute_listClassesCaseInsensitive_success() throws Exception {
+        String listCommand = ListCommand.COMMAND_WORD + " CLASSES";
+        this.assertCommandSuccess(listCommand, ListCommand.MESSAGE_CLASSES, this.model);
+    }
+
+    @Test
     public void execute_storageThrowsIoException_throwsCommandException() {
         this.assertCommandFailureForExceptionFromStorage(LogicManagerTest.DUMMY_IO_EXCEPTION, String.format(
                 LogicManager.FILE_OPS_ERROR_FORMAT, LogicManagerTest.DUMMY_IO_EXCEPTION.getMessage()));

@@ -48,6 +48,24 @@ public class ListAssignmentTest {
     }
 
     @Test
+    public void execute_commandSucceedsWithEmptyAssignmentList() throws CommandException {
+        ListAssignmentCommand command = new ListAssignmentCommand();
+        CommandResult result = command.execute(this.model);
+        Assertions.assertEquals(ListCommand.MESSAGE_ASSIGNMENTS, result.getFeedbackToUser());
+        Assertions.assertEquals(CommandResult.ListView.ASSIGNMENTS, result.getListView());
+    }
+
+    @Test
+    public void execute_multipleListAssignmentCommands_displaySameList() throws CommandException {
+        ListAssignmentCommand command1 = new ListAssignmentCommand();
+        ListAssignmentCommand command2 = new ListAssignmentCommand();
+        CommandResult result1 = command1.execute(this.model);
+        CommandResult result2 = command2.execute(this.model);
+        Assertions.assertEquals(result1.getFeedbackToUser(), result2.getFeedbackToUser());
+        Assertions.assertEquals(result1.getListView(), result2.getListView());
+    }
+
+    @Test
     public void execute_modelNotModified() throws CommandException {
         Model originalModel = new ModelManager(TypicalContacts.getTypicalAddressBook(), new UserPrefs());
         ListAssignmentCommand command = new ListAssignmentCommand();

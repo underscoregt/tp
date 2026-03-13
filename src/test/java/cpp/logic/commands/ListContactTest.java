@@ -51,6 +51,21 @@ public class ListContactTest {
     }
 
     @Test
+    public void execute_returnsCorrectMessage() throws CommandException {
+        ListContactCommand command = new ListContactCommand();
+        CommandResult result = command.execute(this.model);
+        Assertions.assertEquals(ListCommand.MESSAGE_CONTACTS, result.getFeedbackToUser());
+    }
+
+    @Test
+    public void execute_displayAllContactsWhenNoFilterApplied() throws CommandException {
+        ListContactCommand command = new ListContactCommand();
+        CommandResult result = command.execute(this.model);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(CommandResult.ListView.CONTACTS, result.getListView());
+    }
+
+    @Test
     public void execute_modelNotModified() throws CommandException {
         Model originalModel = new ModelManager(TypicalContacts.getTypicalAddressBook(), new UserPrefs());
         ListContactCommand command = new ListContactCommand();

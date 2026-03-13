@@ -153,4 +153,48 @@ public class ListCommandParserTest {
         CommandParserTestUtil.assertParseFailure(this.parser, "1",
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_mixedCaseWithNumbers_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "contacts123",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "123assignments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_tabs_treatAsWhitespace() {
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "\t\tcontacts\t\t", expectedListCommand);
+    }
+
+    @Test
+    public void parse_newlines_treatAsWhitespace() {
+        ListCommand expectedListCommand = new ListAssignmentCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "\n\nassignments\n\n", expectedListCommand);
+    }
+
+    @Test
+    public void parse_mixedWhitespace_treatAsWhitespace() {
+        ListCommand expectedListCommand = new ListClassCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, " \t \n classes \n \t ", expectedListCommand);
+    }
+
+    @Test
+    public void parse_similarButDifferentWords_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "contactss",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "assigments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "classe",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_extraSpace_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "contacts extra",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "assignments multiple words",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
 }

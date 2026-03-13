@@ -48,6 +48,24 @@ public class ListClassTest {
     }
 
     @Test
+    public void execute_commandSucceedsWithEmptyClassList() throws CommandException {
+        ListClassCommand command = new ListClassCommand();
+        CommandResult result = command.execute(this.model);
+        Assertions.assertEquals(ListCommand.MESSAGE_CLASSES, result.getFeedbackToUser());
+        Assertions.assertEquals(CommandResult.ListView.CLASSGROUPS, result.getListView());
+    }
+
+    @Test
+    public void execute_multipleListClassCommands_displaySameList() throws CommandException {
+        ListClassCommand command1 = new ListClassCommand();
+        ListClassCommand command2 = new ListClassCommand();
+        CommandResult result1 = command1.execute(this.model);
+        CommandResult result2 = command2.execute(this.model);
+        Assertions.assertEquals(result1.getFeedbackToUser(), result2.getFeedbackToUser());
+        Assertions.assertEquals(result1.getListView(), result2.getListView());
+    }
+
+    @Test
     public void execute_modelNotModified() throws CommandException {
         Model originalModel = new ModelManager(TypicalContacts.getTypicalAddressBook(), new UserPrefs());
         ListClassCommand command = new ListClassCommand();
