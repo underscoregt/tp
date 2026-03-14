@@ -10,6 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import cpp.commons.core.index.Index;
 import cpp.commons.util.StringUtil;
@@ -197,6 +198,21 @@ public class ParserUtil {
             }
             contactIndices.add(ParserUtil.parseIndex(part));
         }
+
+        if (contactIndices.isEmpty()) {
+            throw new ParseException(ParserUtil.MESSAGE_EMPTY_INDICES);
+        }
+
         return new ArrayList<>(contactIndices);
+    }
+
+    /**
+     * Checks if all the specified prefixes are present in the given
+     * ArgumentMultimap.
+     * The presence of a prefix is determined by the presence of its associated
+     * value in the ArgumentMultimap.
+     */
+    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }

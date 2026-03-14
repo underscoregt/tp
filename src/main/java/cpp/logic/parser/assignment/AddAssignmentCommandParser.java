@@ -1,7 +1,6 @@
 package cpp.logic.parser.assignment;
 
 import java.time.LocalDateTime;
-import java.util.stream.Stream;
 
 import cpp.logic.Messages;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
@@ -10,7 +9,6 @@ import cpp.logic.parser.ArgumentTokenizer;
 import cpp.logic.parser.CliSyntax;
 import cpp.logic.parser.Parser;
 import cpp.logic.parser.ParserUtil;
-import cpp.logic.parser.Prefix;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
@@ -33,7 +31,7 @@ public class AddAssignmentCommandParser implements Parser<AddAssignmentCommand> 
                 CliSyntax.PREFIX_DEADLINE,
                 CliSyntax.PREFIX_CLASS, CliSyntax.PREFIX_CONTACT);
 
-        if (!AddAssignmentCommandParser.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
+        if (!ParserUtil.arePrefixesPresent(argMultimap, CliSyntax.PREFIX_ASSIGNMENT,
                 CliSyntax.PREFIX_DEADLINE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
@@ -53,10 +51,6 @@ public class AddAssignmentCommandParser implements Parser<AddAssignmentCommand> 
         Assignment assignment = new Assignment(name, deadline);
 
         return new AddAssignmentCommand(assignment);
-    }
-
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

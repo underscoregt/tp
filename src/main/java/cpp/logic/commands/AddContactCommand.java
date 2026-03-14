@@ -14,6 +14,7 @@ import cpp.model.assignment.ContactAssignment;
 // import cpp.model.classgroup.ClassGroup;
 // import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
+import cpp.model.util.AssignmentUtil;
 
 /**
  * Adds a contact to the address book.
@@ -73,7 +74,7 @@ public class AddContactCommand extends Command {
 
         if (this.assignmentName != null) {
             List<Assignment> assignmentList = model.getAddressBook().getAssignmentList();
-            assignmentToAllocate = Assignment.findAssignment(assignmentList, this.assignmentName);
+            assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
             if (assignmentToAllocate == null) {
                 throw new CommandException(AddContactCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);

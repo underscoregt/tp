@@ -17,6 +17,7 @@ import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.exceptions.ContactAlreadyAllocatedAssignmentException;
 import cpp.model.contact.Contact;
+import cpp.model.util.AssignmentUtil;
 
 /**
  * Allocates an existing assignment to a contact by their displayed indices.
@@ -63,7 +64,7 @@ public class AllocateAssignmentCommand extends Command {
 
         List<Assignment> assignmentList = model.getAddressBook().getAssignmentList();
 
-        Assignment assignmentToAllocate = Assignment.findAssignment(assignmentList, this.assignmentName);
+        Assignment assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
         if (assignmentToAllocate == null) {
             throw new CommandException(AllocateAssignmentCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
