@@ -179,15 +179,18 @@ public class ParserUtil {
      * Parses the contact indices from the given contact value string.
      * The contact value string is expected to contain space-separated indices.
      * Example: "1 2 3" will be parsed into a list of indices [1, 2, 3].
-     * If the contact value string is empty or contains only whitespace, an empty
-     * list will be returned.
+     * If the contact value string is empty or contains only whitespace, a
+     * {@link ParseException} with {@link ParserUtil#MESSAGE_EMPTY_INDICES} will be
+     * thrown.
      * If the contact value string contains duplicate indices, it will only return
      * the unique indices.
      *
      * @param contactValue the string containing the contact indices to be parsed
      * @return a list of indices parsed from the contact value string
-     * @throws ParseException if any of the contact indices are not valid integers
-     *                        or are out of bounds
+     * @throws ParseException if the contact value string is empty or contains only
+     *                        whitespace, if no indices can be parsed, if any of the
+     *                        contact indices are not valid integers, or if they are
+     *                        out of bounds
      */
     public static List<Index> parseContactIndices(String contactValue) throws ParseException {
         String[] parts = contactValue.trim().split("\\s+");
