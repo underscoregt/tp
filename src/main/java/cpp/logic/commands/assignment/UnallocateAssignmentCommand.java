@@ -20,39 +20,39 @@ import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
 
 /**
- * Allocates an existing assignment to a contact by their displayed indices or
- * class group.
+ * Unallocates an existing assignment from a contact by their displayed indices
+ * or class group.
  */
-public class AllocateAssignmentCommand extends Command {
+public class UnallocateAssignmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "allocass";
+    public static final String COMMAND_WORD = "unallocass";
 
-    public static final String MESSAGE_USAGE = AllocateAssignmentCommand.COMMAND_WORD
-            + ": Allocates an assignment to a contact. "
+    public static final String MESSAGE_USAGE = UnallocateAssignmentCommand.COMMAND_WORD
+            + ": Unallocates an assignment from a contact. "
             + "Parameters: "
             + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME "
             + "[" + CliSyntax.PREFIX_CLASS + "CLASS NAME] "
             + "[" + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES...]\n"
             + "At least one of " + CliSyntax.PREFIX_CLASS + " or " + CliSyntax.PREFIX_CONTACT + " must be provided.\n"
-            + "Example: " + AllocateAssignmentCommand.COMMAND_WORD + " "
+            + "Example: " + UnallocateAssignmentCommand.COMMAND_WORD + " "
             + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1 "
             + CliSyntax.PREFIX_CLASS + "CS2103T10 "
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = """
-            Allocated assignment: %1$s to %2$s contacts.\nContacts allocated: %3$s
+            Unallocated assignment: %1$s from %2$s contacts.\nContacts unallocated: %3$s
             """;
     public static final String MESSAGE_INVALID_ASSIGNMENT_NAME = "The assignment name provided is invalid";
-    public static final String MESSAGE_ALLOCATION_FAILED = "No contacts were allocated the assignment.";
+    public static final String MESSAGE_UNALLOCATION_FAILED = "No contacts were unallocated the assignment.";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
 
     /**
-     * Creates an AllocateAssignmentCommand with the specified assignment and
+     * Creates an UnallocateAssignmentCommand with the specified assignment and
      * contact indices.
      */
-    public AllocateAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices) {
+    public UnallocateAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices) {
         Objects.requireNonNull(assignmentName);
         Objects.requireNonNull(contactIndices);
         this.assignmentName = assignmentName;
@@ -65,17 +65,17 @@ public class AllocateAssignmentCommand extends Command {
 
         List<Assignment> assignmentList = model.getAddressBook().getAssignmentList();
 
-        Assignment assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
+        Assignment assignmentToUnallocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
-        if (assignmentToAllocate == null) {
-            throw new CommandException(AllocateAssignmentCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
+        if (assignmentToUnallocate == null) {
+            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
         }
 
         List<Contact> lastShownContactList = model.getFilteredContactList();
 
         this.checkContactIndices(lastShownContactList);
 
-        return this.allocateToContacts(model, assignmentToAllocate, lastShownContactList);
+        return this.unallocateFromContacts(model, assignmentToUnallocate, lastShownContactList);
     }
 
     @Override
@@ -83,10 +83,10 @@ public class AllocateAssignmentCommand extends Command {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof AllocateAssignmentCommand)) {
+        if (!(other instanceof UnallocateAssignmentCommand)) {
             return false;
         }
-        AllocateAssignmentCommand o = (AllocateAssignmentCommand) other;
+        UnallocateAssignmentCommand o = (UnallocateAssignmentCommand) other;
         return this.assignmentName.equals(o.assignmentName) && this.contactIndices.equals(o.contactIndices);
     }
 
@@ -106,15 +106,15 @@ public class AllocateAssignmentCommand extends Command {
         }
     }
 
-    private CommandResult allocateToContacts(Model model, Assignment assignmentToAllocate,
+    private CommandResult unallocateFromContacts(Model model, Assignment assignmentToUnallocate,
             List<Contact> lastShownContactList) throws CommandException {
-        StringBuilder allocatedContacts = new StringBuilder();
-        boolean anyAllocated = false;
-        int allocatedCount = 0;
+        StringBuilder unallocatedContacts = new StringBuilder();
+        boolean anyUnallocated = false;
+        int unallocatedCount = 0;
 
         for (Index idx : this.contactIndices) {
             Contact contact = lastShownContactList.get(idx.getZeroBased());
-            ContactAssignment ca = new ContactAssignment(assignmentToAllocate.getId(), contact.getId());
+            ContactAssignment ca = new ContactAssignment(assignmentToUnallocate.getId(), contact.getId());
 
             try {
                 model.addContactAssignment(ca);
@@ -124,20 +124,20 @@ public class AllocateAssignmentCommand extends Command {
                 continue;
             }
 
-            if (allocatedContacts.length() > 0) {
-                allocatedContacts.append("; ");
+            if (unallocatedContacts.length() > 0) {
+                unallocatedContacts.append("; ");
             }
-            allocatedContacts.append(contact.getName().fullName);
-            anyAllocated = true;
-            allocatedCount++;
+            unallocatedContacts.append(contact.getName().fullName);
+            anyUnallocated = true;
+            unallocatedCount++;
         }
 
-        if (!anyAllocated) {
-            throw new CommandException(AllocateAssignmentCommand.MESSAGE_ALLOCATION_FAILED);
+        if (!anyUnallocated) {
+            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED);
         }
 
-        return new CommandResult(String.format(AllocateAssignmentCommand.MESSAGE_SUCCESS,
-                Messages.format(assignmentToAllocate), allocatedCount, allocatedContacts.toString()));
+        return new CommandResult(String.format(UnallocateAssignmentCommand.MESSAGE_SUCCESS,
+                Messages.format(assignmentToUnallocate), unallocatedCount, unallocatedContacts.toString()));
     }
 
 }
