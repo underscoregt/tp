@@ -34,10 +34,9 @@ public class AllocateClassGroupCommand extends Command {
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = """
-            Allocated class group: %1$s to %2$s contacts.\nContacts allocated: %3$s
-            """;
+            Allocated class group: %1$s to %2$s contacts.\nContacts allocated: %3$s""";
     public static final String MESSAGE_INVALID_CLASS_GROUP_NAME = "The class group name provided is invalid";
-    public static final String MESSAGE_ALLOCATION_FAILED = "No new contacts were allocated the class group.";
+    public static final String MESSAGE_ALLOCATION_FAILED = "No new contacts were allocated the class group";
 
     private final ClassGroupName classGroupName;
     private final List<Index> contactIndices;

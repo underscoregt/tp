@@ -25,8 +25,7 @@ class JsonSerializableAddressBook {
     public static final String MESSAGE_DUPLICATE_CONTACT = "Contacts list contains duplicate contact(s).";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "Assignments list contains duplicate assignment(s).";
     public static final String MESSAGE_DUPLICATE_CONTACT_ASSIGNMENT = """
-            Contact assignments list contains duplicate contact assignment(s).
-            """;
+            Contact assignments list contains duplicate contact assignment(s).""";
     public static final String MESSAGE_DUPLICATE_CLASS_GROUP = "Class groups list contains duplicate class group(s).";
 
     private final List<JsonAdaptedContact> contacts = new ArrayList<>();

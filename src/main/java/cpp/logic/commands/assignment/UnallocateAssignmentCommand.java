@@ -45,9 +45,8 @@ public class UnallocateAssignmentCommand extends Command {
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = """
-            Unallocated assignment: %1$s from %2$s contacts.\nContacts unallocated: %3$s
-            """;
-    public static final String MESSAGE_UNALLOCATION_FAILED = "No contacts were unallocated the assignment.";
+            Unallocated assignment: %1$s from %2$s contacts.\nContacts unallocated: %3$s""";
+    public static final String MESSAGE_UNALLOCATION_FAILED = "No contacts were unallocated the assignment";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
