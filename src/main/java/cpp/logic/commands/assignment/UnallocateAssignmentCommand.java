@@ -15,7 +15,7 @@ import cpp.model.Model;
 import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
-import cpp.model.assignment.exceptions.ContactAlreadyAllocatedAssignmentException;
+import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
 
@@ -117,10 +117,10 @@ public class UnallocateAssignmentCommand extends Command {
             ContactAssignment ca = new ContactAssignment(assignmentToUnallocate.getId(), contact.getId());
 
             try {
-                model.addContactAssignment(ca);
+                model.removeContactAssignment(ca);
 
-            } catch (ContactAlreadyAllocatedAssignmentException e) {
-                // Skip already allocated contacts without failing the entire command.
+            } catch (ContactAssignmentNotFoundException e) {
+                // Skip contacts that don't have the assignment allocated.
                 continue;
             }
 
