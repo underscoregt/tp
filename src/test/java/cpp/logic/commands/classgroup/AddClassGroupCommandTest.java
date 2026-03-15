@@ -28,8 +28,11 @@ import javafx.collections.ObservableList;
 public class AddClassGroupCommandTest {
 
     @Test
-    public void constructor_nullClassGroup_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> new AddClassGroupCommand(null, null));
+    public void constructor_nullInputs_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class,
+                () -> new AddClassGroupCommand(TypicalClassGroups.CLASS_GROUP_ONE, null));
+        Assert.assertThrows(NullPointerException.class,
+                () -> new AddClassGroupCommand(null, new ArrayList<>()));
     }
 
     @Test

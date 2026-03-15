@@ -140,4 +140,12 @@ public class AllocateClassGroupCommand extends Command {
         }
         this.successfullyAllocatedNames.append(contactName);
     }
+
+    public int getSuccessfulAllocations() {
+        return this.successfulAllocations;
+    }
+
+    public String getSuccessfullyAllocatedNames() {
+        return this.successfullyAllocatedNames.toString();
+    }
 }
