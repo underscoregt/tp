@@ -102,6 +102,15 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// contact-level operations
 
     /**
+     * Returns true if a contact with the same id as {@code id} exists in the
+     * address book.
+     */
+    public boolean hasContactId(String id) {
+        Objects.requireNonNull(id);
+        return this.contacts.containsId(id);
+    }
+
+    /**
      * Returns true if a contact with the same identity as {@code contact} exists in
      * the address book.
      */
@@ -139,6 +148,16 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     //// assignment level operations
+
+    /**
+     * Returns true if an assignment with the same id as {@code id} exists in the
+     * address book.
+     */
+    public boolean hasAssignmentId(String id) {
+        Objects.requireNonNull(id);
+        return this.assignments.containsId(id);
+    }
+
     /**
      * Returns true if an assignment with the same identity as {@code assignment}
      * exists in the address book.

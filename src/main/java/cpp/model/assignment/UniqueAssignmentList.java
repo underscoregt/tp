@@ -28,6 +28,15 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
             .unmodifiableObservableList(this.internalList);
 
     /**
+     * Returns true if the list contains an assignment with the same id as
+     * {@code id}.
+     */
+    public boolean containsId(String id) {
+        Objects.requireNonNull(id);
+        return this.internalList.stream().anyMatch(a -> a.getId().equals(id));
+    }
+
+    /**
      * Returns true if the list contains an equivalent assignment as the given
      * argument (by name).
      */

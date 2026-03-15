@@ -33,6 +33,14 @@ public class UniqueContactList implements Iterable<Contact> {
             .unmodifiableObservableList(this.internalList);
 
     /**
+     * Returns true if the list contains a contact with the same id as {@code id}.
+     */
+    public boolean containsId(String id) {
+        Objects.requireNonNull(id);
+        return this.internalList.stream().anyMatch(contact -> contact.getId().equals(id));
+    }
+
+    /**
      * Returns true if the list contains an equivalent contact as the given
      * argument.
      */

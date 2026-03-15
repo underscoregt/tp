@@ -99,7 +99,7 @@ class JsonSerializableAddressBook {
         }
 
         for (JsonAdaptedContactAssignment jsonAdaptedContactAssignment : this.contactAssignments) {
-            ContactAssignment contactAssignment = jsonAdaptedContactAssignment.toModelType();
+            ContactAssignment contactAssignment = jsonAdaptedContactAssignment.toModelType(addressBook);
             if (addressBook.hasContactAssignment(contactAssignment)) {
                 throw new IllegalValueException(JsonSerializableAddressBook.MESSAGE_DUPLICATE_CONTACT_ASSIGNMENT);
             }
