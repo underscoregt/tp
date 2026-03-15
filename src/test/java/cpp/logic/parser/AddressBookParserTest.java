@@ -21,6 +21,7 @@ import cpp.logic.commands.HelpCommand;
 import cpp.logic.commands.ListCommand;
 import cpp.logic.commands.assignment.AddAssignmentCommand;
 import cpp.logic.commands.classgroup.AddClassGroupCommand;
+import cpp.logic.commands.classgroup.AllocateClassGroupCommand;
 import cpp.logic.parser.exceptions.ParseException;
 import cpp.model.assignment.Assignment;
 import cpp.model.classgroup.ClassGroup;
@@ -114,6 +115,17 @@ public class AddressBookParserTest {
         AddClassGroupCommand command = (AddClassGroupCommand) this.parser
                 .parseCommand(ClassGroupUtil.getAddClassGroupCommand(classGroup));
         Assertions.assertEquals(new AddClassGroupCommand(classGroup, new ArrayList<>()), command);
+    }
+
+    @Test
+    public void parseCommand_allocateClassGroup() throws Exception {
+        ClassGroup classGroup = new ClassGroupBuilder().build();
+        AllocateClassGroupCommand command = (AllocateClassGroupCommand) this.parser
+                .parseCommand(
+                        ClassGroupUtil.getAllocateClassGroupCommand(classGroup,
+                                new ArrayList<>(Arrays.asList(TypicalIndexes.INDEX_FIRST_CONTACT))));
+        Assertions.assertEquals(new AllocateClassGroupCommand(classGroup.getName(),
+                List.of(TypicalIndexes.INDEX_FIRST_CONTACT)), command);
     }
 
     @Test

@@ -11,6 +11,7 @@ import cpp.commons.util.JsonUtil;
 import cpp.model.AddressBook;
 import cpp.testutil.Assert;
 import cpp.testutil.TypicalAssignments;
+import cpp.testutil.TypicalClassGroups;
 import cpp.testutil.TypicalContacts;
 
 public class JsonSerializableAddressBookTest {
@@ -41,6 +42,12 @@ public class JsonSerializableAddressBookTest {
             .resolve("invalidAssignmentAddressBookName.json");
     private static final Path DUPLICATE_ASSIGNMENT_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
             .resolve("duplicateAssignmentAddressBook.json");
+    private static final Path TYPICAL_CLASS_GROUPS_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("typicalClassGroupsAddressBook.json");
+    private static final Path INVALID_CLASS_GROUP_NAME_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("invalidClassGroupNameAddressBook.json");
+    private static final Path DUPLICATE_CLASS_GROUP_FILE = JsonSerializableAddressBookTest.TEST_DATA_FOLDER
+            .resolve("duplicateClassGroupAddressBook.json");
 
     @Test
     public void toModelType_typicalContactsFile_success() throws Exception {
@@ -124,4 +131,36 @@ public class JsonSerializableAddressBookTest {
                 dataFromFile::toModelType);
     }
 
+    @Test
+    public void toModelType_typicalClassGroupsFile_success() throws Exception {
+        JsonSerializableAddressBook dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.TYPICAL_CLASS_GROUPS_FILE,
+                        JsonSerializableAddressBook.class)
+                .get();
+        AddressBook addressBookFromFile = dataFromFile.toModelType();
+        AddressBook expected = new AddressBook();
+        expected.addClassGroup(TypicalClassGroups.CLASS_GROUP_ONE);
+        expected.addClassGroup(TypicalClassGroups.CLASS_GROUP_TWO);
+        Assertions.assertEquals(addressBookFromFile, expected);
+    }
+
+    @Test
+    public void toModelType_invalidClassGroupFile_throwsIllegalValueException() throws Exception {
+        JsonSerializableAddressBook dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.INVALID_CLASS_GROUP_NAME_FILE,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class, dataFromFile::toModelType);
+    }
+
+    @Test
+    public void toModelType_duplicateClassGroups_throwsIllegalValueException() throws Exception {
+        JsonSerializableAddressBook dataFromFile = JsonUtil
+                .readJsonFile(JsonSerializableAddressBookTest.DUPLICATE_CLASS_GROUP_FILE,
+                        JsonSerializableAddressBook.class)
+                .get();
+        Assert.assertThrows(IllegalValueException.class,
+                JsonSerializableAddressBook.MESSAGE_DUPLICATE_CLASS_GROUP,
+                dataFromFile::toModelType);
+    }
 }

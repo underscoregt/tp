@@ -70,7 +70,7 @@ class JsonAdaptedClassGroup {
             try {
                 classGroup.allocateContact(contactId);
             } catch (ContactAlreadyAllocatedClassGroupException e) {
-                throw new IllegalValueException("Duplicate contact found in class group.");
+                throw new IllegalValueException("Duplicate contactId found during allocation.");
             }
         }
         return classGroup;
