@@ -42,6 +42,10 @@ public class AddAssignmentCommand extends Command {
             + CliSyntax.PREFIX_CONTACT + "1 2 3";
 
     public static final String MESSAGE_SUCCESS = "New assignment added: %1$s";
+    public static final String MESSAGE_SUCCESS_WITH_ALLOCATION = """
+            New assignment added: %1$s
+            Allocated assignment to %2$s contact(s)
+            Contacts allocated: %3$s""";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the assignment list";
 
     private final Assignment toAdd;
@@ -103,7 +107,14 @@ public class AddAssignmentCommand extends Command {
         }
 
         model.addAssignment(this.toAdd);
-        return new CommandResult(String.format(AddAssignmentCommand.MESSAGE_SUCCESS, Messages.format(this.toAdd)));
+
+        if (this.classGroupName == null && this.contactIndices.isEmpty()) {
+            return new CommandResult(String.format(AddAssignmentCommand.MESSAGE_SUCCESS, Messages.format(this.toAdd)));
+        } else {
+            return new CommandResult(String.format(
+                    AddAssignmentCommand.MESSAGE_SUCCESS_WITH_ALLOCATION,
+                    Messages.format(this.toAdd), this.allocatedCount, this.allocatedContacts.toString()));
+        }
     }
 
     @Override
