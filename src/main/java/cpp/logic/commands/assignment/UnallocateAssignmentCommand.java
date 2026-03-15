@@ -3,6 +3,7 @@ package cpp.logic.commands.assignment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import cpp.commons.core.index.Index;
 import cpp.commons.util.ToStringBuilder;
@@ -17,8 +18,11 @@ import cpp.model.assignment.Assignment;
 import cpp.model.assignment.AssignmentName;
 import cpp.model.assignment.ContactAssignment;
 import cpp.model.assignment.exceptions.ContactAssignmentNotFoundException;
+import cpp.model.classgroup.ClassGroup;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Contact;
 import cpp.model.util.AssignmentUtil;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Unallocates an existing assignment from a contact by their displayed indices
@@ -45,9 +49,13 @@ public class UnallocateAssignmentCommand extends Command {
             """;
     public static final String MESSAGE_INVALID_ASSIGNMENT_NAME = "The assignment name provided is invalid";
     public static final String MESSAGE_UNALLOCATION_FAILED = "No contacts were unallocated the assignment.";
+    public static final String MESSAGE_INVALID_CLASS_GROUP_NAME = "The class group name provided is invalid";
 
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
+    private final ClassGroupName classGroupName;
+    private int unallocatedCount; // Tracks the number of contacts successfully unallocated.
+    private StringBuilder unallocatedContacts; // Tracks the names of contacts successfully unallocated for feedback.
 
     /**
      * Creates an UnallocateAssignmentCommand with the specified assignment and
@@ -58,6 +66,21 @@ public class UnallocateAssignmentCommand extends Command {
         Objects.requireNonNull(contactIndices);
         this.assignmentName = assignmentName;
         this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = null;
+        this.unallocatedCount = 0;
+        this.unallocatedContacts = new StringBuilder();
+    }
+
+    public UnallocateAssignmentCommand(AssignmentName assignmentName, List<Index> contactIndices,
+            ClassGroupName classGroupName) {
+        Objects.requireNonNull(assignmentName);
+        Objects.requireNonNull(contactIndices);
+        Objects.requireNonNull(classGroupName);
+        this.assignmentName = assignmentName;
+        this.contactIndices = new ArrayList<>(contactIndices);
+        this.classGroupName = classGroupName;
+        this.unallocatedCount = 0;
+        this.unallocatedContacts = new StringBuilder();
     }
 
     @Override
@@ -76,7 +99,23 @@ public class UnallocateAssignmentCommand extends Command {
 
         CommandUtil.checkContactIndices(lastShownContactList, this.contactIndices);
 
-        return this.unallocateFromContacts(model, assignmentToUnallocate, lastShownContactList);
+        ClassGroup classGroupToUnallocate = ClassGroupUtil.findClassGroup(model.getAddressBook().getClassGroupList(),
+                this.classGroupName);
+        if (this.classGroupName != null && classGroupToUnallocate == null) {
+            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_INVALID_CLASS_GROUP_NAME);
+        }
+
+        this.unallocateFromContactsByContactIndices(model, assignmentToUnallocate, lastShownContactList);
+        if (classGroupToUnallocate != null) {
+            this.unallocateFromContactsByClassGroup(model, assignmentToUnallocate, classGroupToUnallocate);
+        }
+
+        if (this.unallocatedCount == 0) {
+            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED);
+        }
+
+        return new CommandResult(String.format(UnallocateAssignmentCommand.MESSAGE_SUCCESS,
+                Messages.format(assignmentToUnallocate), this.unallocatedCount, this.unallocatedContacts.toString()));
     }
 
     @Override
@@ -88,7 +127,8 @@ public class UnallocateAssignmentCommand extends Command {
             return false;
         }
         UnallocateAssignmentCommand o = (UnallocateAssignmentCommand) other;
-        return this.assignmentName.equals(o.assignmentName) && this.contactIndices.equals(o.contactIndices);
+        return this.assignmentName.equals(o.assignmentName) && this.contactIndices.equals(o.contactIndices)
+                && Objects.equals(this.classGroupName, o.classGroupName);
     }
 
     @Override
@@ -96,41 +136,51 @@ public class UnallocateAssignmentCommand extends Command {
         return new ToStringBuilder(this)
                 .add("assignmentName", this.assignmentName)
                 .add("contactIndices", this.contactIndices)
+                .add("classGroupName", this.classGroupName)
                 .toString();
     }
 
-    private CommandResult unallocateFromContacts(Model model, Assignment assignmentToUnallocate,
-            List<Contact> lastShownContactList) throws CommandException {
-        StringBuilder unallocatedContacts = new StringBuilder();
-        boolean anyUnallocated = false;
-        int unallocatedCount = 0;
+    private void unallocateFromContactsByContactIndices(Model model, Assignment assignmentToUnallocate,
+            List<Contact> lastShownContactList) {
 
         for (Index idx : this.contactIndices) {
             Contact contact = lastShownContactList.get(idx.getZeroBased());
-            ContactAssignment ca = new ContactAssignment(assignmentToUnallocate.getId(), contact.getId());
 
-            try {
-                model.removeContactAssignment(ca);
-
-            } catch (ContactAssignmentNotFoundException e) {
-                // Skip contacts that don't have the assignment allocated.
-                continue;
-            }
-
-            if (unallocatedContacts.length() > 0) {
-                unallocatedContacts.append("; ");
-            }
-            unallocatedContacts.append(contact.getName().fullName);
-            anyUnallocated = true;
-            unallocatedCount++;
+            this.unallocateFromContact(model, assignmentToUnallocate, contact);
         }
+    }
 
-        if (!anyUnallocated) {
-            throw new CommandException(UnallocateAssignmentCommand.MESSAGE_UNALLOCATION_FAILED);
+    private void unallocateFromContactsByClassGroup(Model model, Assignment assignmentToUnallocate,
+            ClassGroup classGroupToUnallocate) {
+        Stream<Contact> contactList = model.getAddressBook().getContactList().stream();
+
+        for (String contactId : classGroupToUnallocate.getContactIdSet()) {
+            Contact contact = contactList
+                    .filter(c -> c.getId().equals(contactId))
+                    .findAny()
+                    .orElse(null);
+
+            if (contact != null) {
+                this.unallocateFromContact(model, assignmentToUnallocate, contact);
+            }
         }
+    }
 
-        return new CommandResult(String.format(UnallocateAssignmentCommand.MESSAGE_SUCCESS,
-                Messages.format(assignmentToUnallocate), unallocatedCount, unallocatedContacts.toString()));
+    private void unallocateFromContact(Model model, Assignment assignment, Contact contact) {
+        ContactAssignment ca = new ContactAssignment(assignment.getId(), contact.getId());
+
+        try {
+            model.removeContactAssignment(ca);
+
+            if (this.unallocatedContacts.length() > 0) {
+                this.unallocatedContacts.append("; ");
+            }
+            this.unallocatedContacts.append(contact.getName().fullName);
+            this.unallocatedCount++;
+
+        } catch (ContactAssignmentNotFoundException e) {
+            // Skip contacts that don't have the assignment allocated.
+        }
     }
 
 }
