@@ -42,7 +42,7 @@ public class UnallocateClassGroupCommand extends Command {
     private final ClassGroupName classGroupName;
     private final List<Index> contactIndices;
 
-    private int unallocatedCount; // Tracks the number of contacts successfully unallocated.
+    private int unallocatedCount;
     private StringBuilder successfullyUnallocatedNames = new StringBuilder();
 
     /**
