@@ -51,8 +51,8 @@ public class UnallocateAssignmentCommand extends Command {
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
     private final ClassGroupName classGroupName;
-    private int unallocatedCount; // Tracks the number of contacts successfully unallocated.
-    private StringBuilder unallocatedContacts; // Tracks the names of contacts successfully unallocated for feedback.
+    private int unallocatedCount;
+    private StringBuilder unallocatedContacts;
 
     /**
      * Creates an UnallocateAssignmentCommand with the specified assignment and

@@ -53,8 +53,8 @@ public class AllocateAssignmentCommand extends Command {
     private final AssignmentName assignmentName;
     private final List<Index> contactIndices;
     private final ClassGroupName classGroupName;
-    private int allocatedCount; // Tracks the number of contacts successfully allocated.
-    private StringBuilder allocatedContacts; // Tracks the names of contacts successfully allocated for feedback.
+    private int allocatedCount;
+    private StringBuilder allocatedContacts;
 
     /**
      * Creates an AllocateAssignmentCommand with the specified assignment and
