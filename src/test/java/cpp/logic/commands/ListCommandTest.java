@@ -294,7 +294,7 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_ListAssignmentCommandNullModel_throwsNullPointerException() {
+    public void execute_listAssignmentCommandNullModel_throwsNullPointerException() {
         ListAssignmentCommand command = new ListAssignmentCommand();
         Assertions.assertThrows(NullPointerException.class, () -> command.execute(null));
     }
@@ -390,7 +390,7 @@ public class ListCommandTest {
     }
 
     @Test
-    public void execute_listContactCommand_withFilteredList_showsAllContacts() {
+    public void execute_listContactCommandWithFilteredList_showsAllContacts() {
         Model model = new ModelManager(
                 new AddressBookBuilder()
                         .withContact(TypicalContacts.ALICE)
