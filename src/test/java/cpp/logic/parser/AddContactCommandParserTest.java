@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import cpp.logic.Messages;
 import cpp.logic.commands.AddContactCommand;
 import cpp.logic.commands.CommandTestUtil;
+import cpp.model.assignment.AssignmentName;
+import cpp.model.classgroup.ClassGroupName;
 import cpp.model.contact.Address;
 import cpp.model.contact.Contact;
 import cpp.model.contact.ContactName;
@@ -130,6 +132,52 @@ public class AddContactCommandParserTest {
                 CommandTestUtil.NAME_DESC_AMY + CommandTestUtil.PHONE_DESC_AMY
                         + CommandTestUtil.EMAIL_DESC_AMY + CommandTestUtil.ADDRESS_DESC_AMY,
                 new AddContactCommand(expectedContact));
+    }
+
+    @Test
+    public void parse_optionalClassAndAssignmentPresent_success() {
+        Contact expectedContact = new ContactBuilder(TypicalContacts.AMY).withTags().build();
+        ClassGroupName expectedClassGroupName = new ClassGroupName("CS2103T10");
+        AssignmentName expectedAssignmentName = new AssignmentName("Assignment 1");
+
+        CommandParserTestUtil.assertParseSuccess(this.parser,
+                CommandTestUtil.NAME_DESC_AMY + CommandTestUtil.PHONE_DESC_AMY
+                        + CommandTestUtil.EMAIL_DESC_AMY + CommandTestUtil.ADDRESS_DESC_AMY
+                        + " " + CliSyntax.PREFIX_CLASS + expectedClassGroupName.fullName
+                        + " " + CliSyntax.PREFIX_ASSIGNMENT + expectedAssignmentName.fullName,
+                new AddContactCommand(expectedContact, expectedClassGroupName, expectedAssignmentName));
+    }
+
+    @Test
+    public void parse_repeatedOptionalValue_failure() {
+        String validExpectedContactString = CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
+                + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB;
+
+        CommandParserTestUtil.assertParseFailure(this.parser,
+                " " + CliSyntax.PREFIX_CLASS + "CS2103T10"
+                        + validExpectedContactString
+                        + " " + CliSyntax.PREFIX_CLASS + "CS2101T10",
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_CLASS));
+
+        CommandParserTestUtil.assertParseFailure(this.parser,
+                " " + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1"
+                        + validExpectedContactString
+                        + " " + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 2",
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_ASSIGNMENT));
+    }
+
+    @Test
+    public void parse_invalidOptionalValue_failure() {
+        String validExpectedContactString = CommandTestUtil.NAME_DESC_BOB + CommandTestUtil.PHONE_DESC_BOB
+                + CommandTestUtil.EMAIL_DESC_BOB + CommandTestUtil.ADDRESS_DESC_BOB;
+
+        CommandParserTestUtil.assertParseFailure(this.parser,
+                validExpectedContactString + CommandTestUtil.INVALID_CLASS_NAME_DESC,
+                ClassGroupName.MESSAGE_CONSTRAINTS);
+
+        CommandParserTestUtil.assertParseFailure(this.parser,
+                validExpectedContactString + " " + CliSyntax.PREFIX_ASSIGNMENT + "&invalid",
+                AssignmentName.MESSAGE_CONSTRAINTS);
     }
 
     @Test
