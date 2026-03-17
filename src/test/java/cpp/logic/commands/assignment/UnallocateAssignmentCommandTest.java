@@ -94,6 +94,18 @@ public class UnallocateAssignmentCommandTest {
     }
 
     @Test
+    public void execute_invalidClassGroupName_throwsCommandException() {
+        Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
+        ModelStubWithAssignedClassGroup modelStub = new ModelStubWithAssignedClassGroup(validAssignment);
+
+        UnallocateAssignmentCommand cmd = new UnallocateAssignmentCommand(validAssignment.getName(),
+                new ArrayList<>(), new ClassGroupName("InvalidClassGroup"));
+
+        Assert.assertThrows(CommandException.class, Messages.MESSAGE_CLASS_GROUP_NOT_FOUND,
+                () -> cmd.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         ArrayList<Index> indices = new ArrayList<>(
                 Arrays.asList(TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT));

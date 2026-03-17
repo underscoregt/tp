@@ -75,6 +75,18 @@ public class AllocateAssignmentCommandTest {
     }
 
     @Test
+    public void execute_invalidClassGroupName_throwsCommandException() {
+        Assignment validAssignment = TypicalAssignments.ASSIGNMENT_ONE;
+        ModelStubWithClassGroup modelStub = new ModelStubWithClassGroup(validAssignment);
+
+        AllocateAssignmentCommand cmd = new AllocateAssignmentCommand(validAssignment.getName(),
+                new ArrayList<>(), new ClassGroupName("NonExistentGroup"));
+
+        Assert.assertThrows(CommandException.class, Messages.MESSAGE_CLASS_GROUP_NOT_FOUND,
+                () -> cmd.execute(modelStub));
+    }
+
+    @Test
     public void equals() throws Exception {
         ArrayList<Index> indices = new ArrayList<>(
                 Arrays.asList(TypicalIndexes.INDEX_FIRST_CONTACT, TypicalIndexes.INDEX_SECOND_CONTACT));
