@@ -14,13 +14,16 @@ import cpp.model.assignment.AssignmentName;
 import cpp.model.classgroup.ClassGroupName;
 
 /**
- * Parses input arguments and creates a new delete command object.
+ * Parses input arguments and creates a new {@code DeleteCommand} object.
  */
 public class DeleteCommandParser implements Parser<Command> {
 
     @Override
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
+                CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS);
+
+        argMultimap.verifyNoDuplicatePrefixesFor(
                 CliSyntax.PREFIX_CONTACT, CliSyntax.PREFIX_ASSIGNMENT, CliSyntax.PREFIX_CLASS);
 
         boolean hasContact = argMultimap.getValue(CliSyntax.PREFIX_CONTACT).isPresent();
@@ -45,9 +48,6 @@ public class DeleteCommandParser implements Parser<Command> {
     private DeleteContactCommand parseDeleteContact(ArgumentMultimap argMultimap) throws ParseException {
         List<Index> indices = ParserUtil.parseContactIndices(
                 argMultimap.getValue(CliSyntax.PREFIX_CONTACT).get());
-        if (indices.isEmpty()) {
-            throw new ParseException(ParserUtil.MESSAGE_EMPTY_INDICES);
-        }
         return new DeleteContactCommand(indices);
     }
 
@@ -64,11 +64,8 @@ public class DeleteCommandParser implements Parser<Command> {
      * Parses delete class group arguments and returns a {@code DeleteClassGroupCommand}.
      */
     private DeleteClassGroupCommand parseDeleteClassGroup(ArgumentMultimap argMultimap) throws ParseException {
-        String value = argMultimap.getValue(CliSyntax.PREFIX_CLASS).get();
-        if (value.isBlank()) {
-            throw new ParseException(ParserUtil.MESSAGE_EMPTY_CLASS_GROUP_NAME);
-        }
-        ClassGroupName name = ParserUtil.parseClassGroupName(value);
+        ClassGroupName name = ParserUtil.parseClassGroupName(
+                argMultimap.getValue(CliSyntax.PREFIX_CLASS).get());
         return new DeleteClassGroupCommand(name);
     }
 

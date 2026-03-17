@@ -1,5 +1,7 @@
 package cpp.logic.commands;
 
+import cpp.logic.parser.CliSyntax;
+
 /**
  * Represents a delete command with hidden internal logic and the ability to be executed.
  */
@@ -8,9 +10,14 @@ public abstract class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes a contact, assignment, or class group. Exactly one prefix must be specified.\n"
-            + "Parameters: ct/INDEX [MORE_INDICES]... or ass/ASSIGNMENT_NAME or c/CLASS_GROUP_NAME\n"
-            + "Examples: " + COMMAND_WORD + " ct/1 2 3, " + COMMAND_WORD + " ass/Assignment 1, "
-            + COMMAND_WORD + " c/CS2103T10";
+            + ": Deletes a contact, assignment, or class group.\n"
+            + "Parameters: "
+            + CliSyntax.PREFIX_CONTACT + "CONTACT INDICES... or "
+            + CliSyntax.PREFIX_ASSIGNMENT + "ASSIGNMENT NAME or "
+            + CliSyntax.PREFIX_CLASS + "CLASS NAME\n"
+            + "Exactly one prefix must be specified.\n"
+            + "Examples: " + COMMAND_WORD + " " + CliSyntax.PREFIX_CONTACT + "1 2 3, "
+            + COMMAND_WORD + " " + CliSyntax.PREFIX_ASSIGNMENT + "Assignment 1, "
+            + COMMAND_WORD + " " + CliSyntax.PREFIX_CLASS + "CS2103T10";
 
 }

@@ -38,7 +38,7 @@ public class DeleteClassGroupCommandTest {
     }
 
     @Test
-    public void execute_notFound_commandFailure() {
+    public void execute_classGroupNotFound_commandFailure() {
         DeleteClassGroupCommand deleteCommand = new DeleteClassGroupCommand(
                 new ClassGroupName("NonexistentClass"));
 

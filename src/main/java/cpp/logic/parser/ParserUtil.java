@@ -31,7 +31,6 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_EMPTY_INDICES = "Contact indices should not be blank.";
-    public static final String MESSAGE_EMPTY_CLASS_GROUP_NAME = "Class group name should not be blank.";
     public static final DateTimeFormatter DEADLINE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     /**

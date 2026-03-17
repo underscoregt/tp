@@ -1,6 +1,5 @@
 package cpp.logic.commands.classgroup;
 
-import java.util.List;
 import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
@@ -11,6 +10,7 @@ import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.Model;
 import cpp.model.classgroup.ClassGroup;
 import cpp.model.classgroup.ClassGroupName;
+import cpp.model.util.ClassGroupUtil;
 
 /**
  * Deletes a class group identified using its name from the address book.
@@ -28,12 +28,12 @@ public class DeleteClassGroupCommand extends DeleteCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Objects.requireNonNull(model);
-        List<ClassGroup> classGroupList = model.getAddressBook().getClassGroupList();
 
-        ClassGroup classGroupToDelete = classGroupList.stream()
-                .filter(cg -> cg.getName().equals(this.targetName))
-                .findFirst()
-                .orElseThrow(() -> new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND));
+        ClassGroup classGroupToDelete = ClassGroupUtil.findClassGroup(
+                model.getAddressBook().getClassGroupList(), this.targetName);
+        if (classGroupToDelete == null) {
+            throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
+        }
 
         model.deleteClassGroup(classGroupToDelete);
         return new CommandResult(
