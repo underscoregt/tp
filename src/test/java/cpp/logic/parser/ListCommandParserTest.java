@@ -14,14 +14,14 @@ public class ListCommandParserTest {
     @Test
     public void parse_emptyArgs_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(this.parser, "     ",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, 
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                         ListCommand.MESSAGE_TAB_EMPTY + "\n" + ListCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_emptyString_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(this.parser, "",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, 
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                         ListCommand.MESSAGE_TAB_EMPTY + "\n" + ListCommand.MESSAGE_USAGE));
     }
 
