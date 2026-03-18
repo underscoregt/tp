@@ -5,8 +5,6 @@ import java.util.Objects;
 
 import cpp.commons.util.ToStringBuilder;
 import cpp.logic.Messages;
-import cpp.logic.commands.assignment.AllocateAssignmentCommand;
-import cpp.logic.commands.classgroup.AllocateClassGroupCommand;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.logic.parser.CliSyntax;
 import cpp.model.Model;
@@ -85,7 +83,7 @@ public class AddContactCommand extends Command {
             classGroupToAllocate = ClassGroupUtil.findClassGroup(classGroupList, this.classGroupName);
 
             if (classGroupToAllocate == null) {
-                throw new CommandException(AllocateClassGroupCommand.MESSAGE_INVALID_CLASS_GROUP_NAME);
+                throw new CommandException(Messages.MESSAGE_CLASS_GROUP_NOT_FOUND);
             }
         }
 
@@ -96,7 +94,7 @@ public class AddContactCommand extends Command {
             assignmentToAllocate = AssignmentUtil.findAssignment(assignmentList, this.assignmentName);
 
             if (assignmentToAllocate == null) {
-                throw new CommandException(AllocateAssignmentCommand.MESSAGE_INVALID_ASSIGNMENT_NAME);
+                throw new CommandException(Messages.MESSAGE_ASSIGNMENT_NOT_FOUND);
             }
         }
 
