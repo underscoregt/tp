@@ -14,13 +14,15 @@ public class ListCommandParserTest {
     @Test
     public void parse_emptyArgs_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(this.parser, "     ",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_TAB_EMPTY));
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                        ListCommand.MESSAGE_TAB_EMPTY + "\n" + ListCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_emptyString_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(this.parser, "",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_TAB_EMPTY));
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                        ListCommand.MESSAGE_TAB_EMPTY + "\n" + ListCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -196,5 +198,303 @@ public class ListCommandParserTest {
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         CommandParserTestUtil.assertParseFailure(this.parser, "assignments multiple words",
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    // ========== EDGE CASES FOR UNORTHODOX USER ACTIONS ==========
+
+    @Test
+    public void parse_unicodeCharacters_throwsParseException() {
+        // Chinese characters
+        CommandParserTestUtil.assertParseFailure(this.parser, "联系人",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        // Arabic characters
+        CommandParserTestUtil.assertParseFailure(this.parser, "جهات",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        // Japanese characters
+        CommandParserTestUtil.assertParseFailure(this.parser, "連絡先",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emojiCharacters_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "😀contacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "contacts🎉",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "👨‍👩‍👧",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_accentedCharacters_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "côñtäcts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "àssignmènts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "clässës",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unicodeWhitespace_throwsParseException() {
+        // Non-breaking space (U+00A0) is NOT trimmed by Java's trim()
+        // So the string becomes "\u00A0contacts\u00A0" which doesn't match "contacts"
+        CommandParserTestUtil.assertParseFailure(this.parser, "\u00A0contacts\u00A0",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_controlCharacters_succeeds() {
+        // Null character is trimmed by trim() (codes <= U+0020 are trimmed)
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "contacts\u0000", expectedListCommand);
+    }
+
+    @Test
+    public void parse_controlCharactersInMiddle_throwsParseException() {
+        // Tab character in the middle of word is NOT trimmed, so exact match fails
+        CommandParserTestUtil.assertParseFailure(this.parser, "co\u0009ntacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_extremelyLongInput_throwsParseException() {
+        StringBuilder longInput = new StringBuilder();
+        for (int i = 0; i < 1000; i++) {
+            longInput.append("a");
+        }
+        CommandParserTestUtil.assertParseFailure(this.parser, longInput.toString(),
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_repeatedCharacters_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "cccccccccccc",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "aaaaaaaaaaaa",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_typoOneCharacterOff_throwsParseException() {
+        // One character off
+        CommandParserTestUtil.assertParseFailure(this.parser, "contacs",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "aassignments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "classs",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_transposedCharacters_throwsParseException() {
+        // Transposed characters
+        CommandParserTestUtil.assertParseFailure(this.parser, "cnotacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "asignments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_reverseSpelling_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "stcatnoc",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "sessamgissa",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_allNumbers_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "00000000000",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "999999999999",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_mixedSpecialCharacters_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "con@#$%^&*()",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "!!!contacts!!!",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_underscoreAndDash_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "con_tacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "assign-ments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "clas.ses",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_parenthesesAndBrackets_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "(contacts)",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "[assignments]",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "{classes}",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_quotesAndApostrophes_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "\"contacts\"",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "'assignments'",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "`classes`",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_slashCharacters_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "contacts/",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "/assignments",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "cla\\sses",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_leadingZeros_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "00001",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "000",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_scientificNotation_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "1e5",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "1.5e-10",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_hexadecimalInput_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "0x1A",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "0xFF",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_binaryInput_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "0b1010",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_htmlTags_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "<contacts>",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "<script>alert('xss')</script>",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_sqlInjectionPatterns_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "'; DROP TABLE--",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "' OR '1'='1",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_veryManySpaces_succeeds() {
+        // Trailing spaces are trimmed by trim(), so "contacts" + many spaces becomes
+        // just "contacts"
+        String manySpaces = "contacts" + " ".repeat(100);
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, manySpaces, expectedListCommand);
+    }
+
+    @Test
+    public void parse_carriageReturnCharacter_treatAsWhitespace() {
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "\rcontacts\r", expectedListCommand);
+    }
+
+    @Test
+    public void parse_formFeedAndVerticalTab_treatAsWhitespace() {
+        ListCommand expectedListCommand = new ListAssignmentCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "\fassignments\u000B", expectedListCommand);
+    }
+
+    @Test
+    public void parse_zeroWidthSpace_throwsParseException() {
+        // Zero-width space (U+200B) is NOT trimmed by Java's trim(), so exact match
+        // fails
+        CommandParserTestUtil.assertParseFailure(this.parser, "\u200Bcontacts\u200B",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_rightToLeftOverride_throwsParseException() {
+        // Right-to-left override character
+        CommandParserTestUtil.assertParseFailure(this.parser, "\u202Estnactnoc",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_byteOrderMark_throwsParseException() {
+        // Byte-order mark (U+FEFF) is NOT trimmed by Java's trim(), so exact match
+        // fails
+        CommandParserTestUtil.assertParseFailure(this.parser, "\uFEFFcontacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_partiallySpelledWords_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "cont",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "ass",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "cla",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_almostCorrectSpelling_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "contactz",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "assignmunts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "classez",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_doubleVowels_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "coontacts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "aassiignmeents",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_missingVowels_throwsParseException() {
+        CommandParserTestUtil.assertParseFailure(this.parser, "cntcts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        CommandParserTestUtil.assertParseFailure(this.parser, "sgnmnts",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_camelCase_caseInsensitive() {
+        // camelCase should work with case-insensitive parsing
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "ContactS", expectedListCommand);
+    }
+
+    @Test
+    public void parse_alternatingCasePattern_works() {
+        ListCommand expectedListCommand = new ListContactCommand();
+        CommandParserTestUtil.assertParseSuccess(this.parser, "CoNtAcTs", expectedListCommand);
     }
 }

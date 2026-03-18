@@ -23,7 +23,7 @@ public class ListCommandParser implements Parser<ListCommand> {
             return new ListClassCommand();
         } else if (trimmedArgs.isEmpty()) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_TAB_EMPTY));
+                    ListCommand.MESSAGE_TAB_EMPTY + "\n" + ListCommand.MESSAGE_USAGE));
         } else {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     ListCommand.MESSAGE_USAGE));

@@ -20,8 +20,8 @@ public abstract class ListCommand extends Command {
     public static final String MESSAGE_USAGE = ListCommand.COMMAND_WORD
             + ": Lists all items in the specified tab.\n"
             + "Parameters: <TAB>\n"
-            + "Example: " + ListCommand.COMMAND_WORD + " contacts"
-            + "Example: " + ListCommand.COMMAND_WORD + " assignments"
+            + "Example: " + ListCommand.COMMAND_WORD + " contacts\n"
+            + "Example: " + ListCommand.COMMAND_WORD + " assignments\n"
             + "Example: " + ListCommand.COMMAND_WORD + " classes";
 
     protected ListCommand() {
