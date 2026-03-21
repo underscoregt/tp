@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import cpp.commons.core.index.Index;
+import cpp.logic.Messages;
 import cpp.logic.commands.CommandResult;
 import cpp.logic.commands.exceptions.CommandException;
 import cpp.model.AddressBook;
@@ -127,7 +128,7 @@ public class AllocateClassGroupCommandTest {
         AllocateClassGroupCommand allocateClassGroupCommand = new AllocateClassGroupCommand(invalidClassGroupName,
                 validContactIndices);
 
-        Assert.assertThrows(CommandException.class, AllocateClassGroupCommand.MESSAGE_INVALID_CLASS_GROUP_NAME,
+        Assert.assertThrows(CommandException.class, Messages.MESSAGE_CLASS_GROUP_NOT_FOUND,
                 () -> allocateClassGroupCommand.execute(modelStub));
     }
 
