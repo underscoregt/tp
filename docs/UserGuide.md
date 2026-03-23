@@ -129,7 +129,9 @@ This quick start assumes you are a teacher who wants to install CPP, open the ap
 Within a few seconds the application will appear. The main User Interface (UI) contains from top to bottom:
 
 * A command box to enter CLI commands.
+
 * A result display that shows the output of commands and brief success/error messages.
+
 * A central list panel with a toggle to show contacts, classes, or assignments.
 
     <box type="info">The app will automatically load some default contacts on first launch.</box>
@@ -261,6 +263,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
 ### Listing all contacts : `list`
@@ -276,15 +279,19 @@ Edits an existing contact in the address book.
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 
 * Edits the contact at the specified `INDEX`. The index refers to the index number shown in the displayed contact list. The index **must be a positive integer** 1, 2, 3, …​
+
 * At least one of the optional fields must be provided.
+
 * Existing values will be updated to the input values.
+
 * When editing tags, the existing tags of the contact will be removed i.e adding of tags is not cumulative.
-* You can remove all the contact’s tags by typing `t/` without
-    specifying any tags after it.
+
+* You can remove all the contact’s tags by typing `t/` without specifying any tags after it.
 
 Examples:
 
 * `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st contact to be `91234567` and `johndoe@example.com` respectively.
+
 * `edit 2 n/Betsy Crower t/` Edits the name of the 2nd contact to be `Betsy Crower` and clears all existing tags.
 
 ### Locating contacts by name: `find`
@@ -294,15 +301,20 @@ Finds contacts whose names contain any of the given keywords.
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
+
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+
 * Only the name is searched.
+
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Contacts matching at least one keyword will be returned (i.e. `OR` search).
+
+* Contacts matching at least one keyword will be returned (i.e. `OR` search).<br>
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
 
 * `find John` returns `john` and `John Doe`
+
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
@@ -313,13 +325,46 @@ Deletes the specified contact from the address book.
 Format: `delete INDEX`
 
 * Deletes the contact at the specified `INDEX`.
+
 * The index refers to the index number shown in the displayed contact list.
+
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
 
 * `list` followed by `delete 2` deletes the 2nd contact in the address book.
+
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
+
+### Adding assignments: `addass`
+
+Adds an assignment to the address book.
+
+Format: `addass ass/ASSIGNMENT NAME d/DEADLINE [c/CLASS NAME] [ct/CONTACT INDICES...]​`
+
+* Creates an assignment with the specified `ASSIGNMENT NAME` and `DEADLINE`.
+
+* The `DEADLINE` provided must be in the format `dd-MM-yyyy HH:mm`.
+
+* `c/CLASS NAME` is optional and can be used to allocate the assignment to all contacts in that class.
+
+* `ct/CONTACT INDICES` is optional and can be used to allocate the assignment to specific contacts. If the `ct/` prefix is included, at least 1 contact index must be specified.
+
+* These `CONTACT INDICES` must be positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
+
+Examples:
+
+* `addass ass/Assignment 1 d/01-12-2023 23:59`<br>
+  Creates an assignment with the name "Assignment 1" and deadline "1 Dec 2023 23:59".
+
+* `addass ass/Assignment 2 d/15-12-2023 23:59 c/CS2103T`<br>
+  Creates an assignment with the name "Assignment 2" and deadline "15 Dec 2023 23:59", allocated to all contacts belonging to class "CS2103T".
+
+* `list contacts` followed by `addass ass/Assignment 3 d/30-12-2023 23:59 ct/1 2 3`<br>
+  Creates an assignment with the name "Assignment 3" and deadline "30 Dec 2023 23:59", allocated to the 1st, 2nd, and 3rd contacts in the list.
+
+* `list contacts` followed by `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T ct/4 5`<br>
+  Creates an assignment with the name "Assignment 4" and deadline "15 Jan 2024 23:59", allocated to the 4th and 5th contacts in the list, as well as all contacts belonging to class "CS2103T".
 
 ### Clearing all entries : `clear`
 
