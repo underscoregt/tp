@@ -13,7 +13,7 @@ Classroom Plus Plus (CPP) is a desktop application designed for educators to man
 
 * **Primary users:** Primary and secondary school teachers and tutors who manage classes and student records.
 
-* **Assumed skills:** Basic computer literacy, and comfortable using a terminal/command prompt. No prior experience with Java or software development is required.
+* **Assumed skills:** Basic computer literacy, and comfortable using a CLI. No prior experience with Java or software development is required.
 
 **How to use this guide**
 
