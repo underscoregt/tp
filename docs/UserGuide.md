@@ -277,12 +277,20 @@ Examples:
 
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-### Listing all contacts : `list`
+### Listing all contacts : `list contacts`
 
 Shows a list of all contacts in the address book.
 
-Format: `list`
+Format: `list contacts`
 
+* If your address book is completely empty (no students have been added yet), running this command will simply display an empty list. It will not generate an error.
+
+* The Contact List panel on will update to display all students.
+
+* The result box will display the message: `Listed all contacts`
+
+* The command does not accept any additional arguments. If you type extra words (e.g., `list contacts cs2103t`), the system will reject it and display an `Invalid command format` error.
+  
 ### Editing a contact : `edit`
 
 Edits an existing contact in the address book.
@@ -343,7 +351,7 @@ Format: `delete INDEX`
 
 Examples:
 
-* `list` followed by `delete 2` deletes the 2nd contact in the address book.
+* `list contacts` followed by `delete 2` deletes the 2nd contact in the address book.
 
 * `find Betsy` followed by `delete 1` deletes the 1st contact in the results of the `find` command.
 
@@ -398,6 +406,20 @@ Examples:
   The screenshot below illustrates the last example, where the class "CS2103T" consists of contacts 2-5.\
   ![Creating and allocating Assignment 4](images/addass-result.png)
 
+### Listing all assignments : `list assignments`
+
+Shows a list of all assignments in the address book.
+
+Format: `list assignments`
+
+* If your assignments is completely empty (no assignments have been added yet), running this command will simply display an empty list. It will not generate an error.
+
+* The Contact List panel on will update to display all students.
+
+* The result box will display the message: `Listed all assignments`
+
+* The command does not accept any additional arguments. If you type extra words (e.g., `list assignments cs2103t`), the system will reject it and display an `Invalid command format` error.
+  
 ### Allocating assignments to contacts: `allocass`
 
 Allocates an assignment to specific contacts.
@@ -498,6 +520,20 @@ Examples:
   The screenshot below illustrates the last example, where the class "CS2103T" contains contacts 2-5, and only contacts 1, 2, 4, and 5 had the assignment allocated.<br>
   ![Unallocating Assignment 3](images/unallocass-result.png)
 
+### Listing all classes : `list classes`
+
+Shows a list of all classes in the address book.
+
+Format: `list classes`
+
+* If there is no classes have been added yet, running this command will simply display an empty list. It will not generate an error.
+
+* The Contact List panel on will update to display all students.
+
+* The result box will display the message: `Listed all classes`
+
+* The command does not accept any additional arguments. If you type extra words (e.g., `list classes cs2103t`), the system will reject it and display an `Invalid command format` error.
+  
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
