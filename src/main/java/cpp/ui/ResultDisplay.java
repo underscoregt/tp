@@ -23,7 +23,8 @@ public class ResultDisplay extends UiPart<Region> {
     private TextArea resultDisplay;
 
     /**
-     * Creates a {@code ResultDisplay} and wires automatic height adjustment listeners.
+     * Creates a {@code ResultDisplay} and wires automatic height adjustment
+     * listeners.
      */
     public ResultDisplay() {
         super(ResultDisplay.FXML);
@@ -56,10 +57,11 @@ public class ResultDisplay extends UiPart<Region> {
             String content = this.resultDisplay.getText();
             Text helper = new Text((content == null || content.isEmpty()) ? " " : content);
             helper.setFont(this.resultDisplay.getFont());
-            helper.setWrappingWidth(Math.max(0, textAreaWidth - TEXTAREA_HORIZONTAL_PADDING));
+            helper.setWrappingWidth(Math.max(0, textAreaWidth - ResultDisplay.TEXTAREA_HORIZONTAL_PADDING));
 
             double contentHeight = helper.getLayoutBounds().getHeight();
-            double targetHeight = clamp(contentHeight + TEXTAREA_VERTICAL_PADDING, MIN_HEIGHT, MAX_HEIGHT);
+            double targetHeight = ResultDisplay.clamp(contentHeight + ResultDisplay.TEXTAREA_VERTICAL_PADDING,
+                    ResultDisplay.MIN_HEIGHT, ResultDisplay.MAX_HEIGHT);
 
             this.resultDisplay.setMinHeight(targetHeight);
             this.resultDisplay.setPrefHeight(targetHeight);
