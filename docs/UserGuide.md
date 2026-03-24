@@ -283,9 +283,9 @@ Shows a list of all contacts in the address book.
 
 Format: `list contacts`
 
-* If your address book is completely empty (no students have been added yet), running this command will simply display an empty list. It will not generate an error.
+* If your address book is completely empty (no contacts have been added yet), running this command will simply display an empty list. It will not generate an error.
 
-* The Contact List panel on will update to display all students.
+* The Contact List panel on will update to display all contacts.
 
 * The result box will display the message: `Listed all contacts`
 
@@ -412,9 +412,9 @@ Shows a list of all assignments in the address book.
 
 Format: `list assignments`
 
-* If your assignments is completely empty (no assignments have been added yet), running this command will simply display an empty list. It will not generate an error.
+* If your assignment list is completely empty (no assignments have been added yet), running this command will simply display an empty list. It will not generate an error.
 
-* The Contact List panel on will update to display all students.
+* The Assignment List panel on will update to display all contacts.
 
 * The result box will display the message: `Listed all assignments`
 
@@ -526,9 +526,9 @@ Shows a list of all classes in the address book.
 
 Format: `list classes`
 
-* If there is no classes have been added yet, running this command will simply display an empty list. It will not generate an error.
+* If no classes have been added yet, running this command will simply display an empty list. It will not generate an error.
 
-* The Contact List panel on will update to display all students.
+* The Class List panel on will update to display all contacts.
 
 * The result box will display the message: `Listed all classes`
 
