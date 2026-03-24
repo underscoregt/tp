@@ -15,8 +15,8 @@ public class ResultDisplay extends UiPart<Region> {
 
     private static final String FXML = "ResultDisplay.fxml";
     private static final double MIN_HEIGHT = 100;
-    private static final double MAX_HEIGHT = 220;
-    private static final double TEXTAREA_VERTICAL_PADDING = 22;
+    private static final double MAX_HEIGHT = 200;
+    private static final double TEXTAREA_VERTICAL_PADDING = 28;
     private static final double TEXTAREA_HORIZONTAL_PADDING = 24;
 
     @FXML
