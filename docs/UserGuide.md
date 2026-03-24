@@ -268,7 +268,9 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNM
 
 * Creates a contact with the specified `NAME`, `PHONE_NUMBER`, `EMAIL` and `ADDRESS`.
 
-* The `NAME` provided must only contain alphanumeric characters and spaces only. It should not start with a space, and cannot be blank. The `NAME` must be unique across all contacts.
+* The `NAME` provided must only contain alphanumeric characters and spaces only. It should not start with a space, and cannot be blank. 
+
+* The `NAME` must be unique across all contacts.
 
 * The `PHONE_NUMBER` provided must only contain numeric digits (0-9), be a minimum of 3 digits long, and cannot be blank.
 
@@ -438,7 +440,7 @@ Format: `allocass ass/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]`
 
 * At least 1 of `[c/CLASS_NAME]` or `[ct/CONTACT_INDICES...]` must be provided.
 
-  * The `CLASS_NAME` must match the name of an existing class (case-insensitive).
+* The `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
 * The `CONTACT_INDICES...` must contain 1 or more positive integers 1, 2, 3, ..., referring to the index number shown in the displayed contact list.
   
