@@ -264,13 +264,13 @@ Format: `help`
 
 Adds a contact to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNMENT_NAME] [t/TAG]...`
+Format: `addcontact n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNMENT_NAME] [t/TAG]...`
 
 * Creates a contact with the specified `NAME`, `PHONE_NUMBER`, `EMAIL` and `ADDRESS`.
 
-* The `NAME` provided must only contain alphanumeric characters and spaces only. It should not start with a space, and cannot be blank. 
+* The `NAME` provided must only contain alphanumeric characters and spaces only. It cannot be blank.
 
-* The `NAME` must be unique across all contacts.
+* The `NAME` must be unique across all contacts (case-insensitive).
 
 * The `PHONE_NUMBER` provided must only contain numeric digits (0-9), be a minimum of 3 digits long, and cannot be blank.
 
@@ -280,11 +280,15 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNM
 
   * The domain must contain at least one period, each label must be alphanumeric with optional hyphens between characters, and the top-level domain must be at least 2 characters long. No spaces allowed, and cannot be blank.
 
-* The `ADDRESS` provided can contain any characters, but cannot start with a space and cannot be blank.
+* The `ADDRESS` provided can contain any characters, and cannot be blank.
 
-* `c/CLASS_NAME` is optional and can be used to allocate the contact to the specific class. If the `c/` prefix is included, the `CLASS_NAME` must match the name of an existing class (case-insensitive).
+* `c/CLASS_NAME` is optional and can be used to allocate the specified class to the contact. If the `c/` prefix is included, the `CLASS_NAME` must match the name of an existing class (case-insensitive).
 
-* `ass/ASSIGNMENT_NAME` is optional and can be used to allocate the contact to the specific assignment. If the `ass/` prefix is included, the `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
+* `ass/ASSIGNMENT_NAME` is optional and can be used to allocate the specified assignment to the contact. If the `ass/` prefix is included, the `ASSIGNMENT_NAME` must match the name of an existing assignment (case-insensitive).
+
+* `t/TAG` is optional and can be used to add tags to the contact. Each `TAG` must be a single alphanumeric word (no spaces), and tags are case-sensitive.
+
+* If multiple instances of the same tag are provided, the command still succeeds, but only one instance of that tag is added.
 
 <box type="warning" seamless>
 
@@ -302,10 +306,10 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNM
 Examples:
 
 * `addcontact n/Betsy Crowe e/betsycrowe@example.com a/Betsy Street, Block 123, #06-07 p/1234567` <br>
-  Creates a contact with the name "Betsy Crowe", phone number "1234567", email "betsycrowe<span></span>@example.com", address "John Street, Block 123, #06-07"
+  Creates a contact with the name "Betsy Crowe", phone number "1234567", email "betsycrowe<span></span>@example.com", address "Betsy Street, Block 123, #06-07"
 
 * `addcontact n/John Doe p/98765432 e/johnd@example.com a/311, Clementi Ave 2, #02-25 c/CS2103T10 ass/Assignment 1 t/friends t/owesMoney`<br>
-  Creates a contact with the name "John Doe", phone number "98765432", email "johnd<span></span>@example.com", address "311, Clementi Ave 2, #02-25", assigned to class group "CS2103T10" and assignment "Assignment1", with tags "friends" and "owesMoney".
+  Creates a contact with the name "John Doe", phone number "98765432", email "johnd<span></span>@example.com", address "311, Clementi Ave 2, #02-25", allocated to class group "CS2103T10" and assignment "Assignment 1", with tags "friends" and "owesMoney".
 
 ### Listing all contacts : `list`
 
@@ -570,7 +574,7 @@ _Details coming soon ..._
 **A**: Make a copy of `data/addressbook.json` and store it in a safe location such as a cloud or external drive. To restore, stop CPP, replace the `addressbook.json` in the app home `data/` folder, then start CPP.
 
 **Q**: How does CPP prevent duplicate contacts?\
-**A**: CPP performs basic duplicate detection at entry. **For contacts**, the **name** should be unique. No 2 contacts should share the same name. If you attempt to add a contact that violates these rules, CPP will reject the entry and show an error message. **For classes and assignments**, the **name** should be unique.
+**A**: CPP performs basic duplicate detection at entry. **For contacts, classes and assignments**, the **name** should be unique. No 2 contacts should share the same name. If you attempt to add a contact that violates these rules, CPP will reject the entry and show an error message.
 
 **Q**: Can I export/import data for other systems (e.g., Excel)?\
 **A**: The primary data format used by CPP is JavaScript Object Notation (JSON). We do not support importing from Excel, but users may manually convert their Excel files to JSON format, adhering to the structure and format of the `addressbook.json` file generated on first run. Manual editing of `addressbook.json` is not recommended unless you are comfortable with JSON.
@@ -599,7 +603,7 @@ If you encounter other issues, please raise a ticket with the project maintainer
 
 | Action                    | Format, Examples                                                                                                                                                       |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Add**                   | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
+| **Add**                   | `addcontact n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [c/CLASS_NAME] [ass/ASSIGNMENT_NAME] [t/TAG]...` <br> e.g., `addcontact n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 /CS2103T10 ass/Assignment 1 t/friend t/colleague` |
 | **Clear**                 | `clear`                                                                                                                                                                |
 | **Add Assignment**        | `addass ass/ASSIGNMENT_NAME d/DEADLINE [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `addass ass/Assignment 4 d/15-01-2024 23:59 c/CS2103T ct/4 5`                |
 | **Allocate Assignment**   | `allocass ass/ASSIGNMENT_NAME [c/CLASS_NAME] [ct/CONTACT_INDICES...]` <br> e.g., `allocass ass/Assignment 3 c/CS2103T ct/1 2 3`                                        |
